@@ -10,5 +10,5 @@
   { "source": "/cookies", "destination": "/cookies.html" },
   { "source": "/terms", "destination": "/terms.html" },
   { "source": "/contact-privacy", "destination": "/contact-privacy.html" },
-
+]
 }
