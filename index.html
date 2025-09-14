@@ -657,6 +657,24 @@
                 localStorage.setItem('cookie_consent', 'declined');
                 cookieBanner.classList.remove('active');
             });
+
+            // --- NIEUW: Logica voor "Join" knoppen in de header ---
+            const headerJoinButtons = document.querySelectorAll('.header-join-button');
+            headerJoinButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Reset de modal naar de beginstaat
+                    form.reset();
+                    if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
+                    messageEl.textContent = '';
+                    formContainer.classList.remove('hidden');
+                    successCard.classList.add('hidden');
+                    copyLinkButton.textContent = 'Kopieer Link';
+
+                    // Forceer de modal om te openen met de 'driver' inhoud
+                    updateModalContent('driver'); 
+                    modal.style.display = 'flex';
+                });
+            });
         });
     </script>
 
