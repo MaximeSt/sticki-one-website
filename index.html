@@ -18,6 +18,7 @@
         body { font-family: 'Montserrat', sans-serif; background-color: #F8F9FA; }
         .gradient-bg { background: linear-gradient(135deg, #fce1d1 0%, #f7d8f5 100%); }
         .tab-button.active { background-color: #1a202c; color: white; }
+        .modal-tab-button.active { background-color: #1a202c; color: white; }
         .tab-button { transition: all 0.3s ease; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
@@ -25,6 +26,16 @@
         .form-modal.active { display: flex; }
         #cookie-banner { display: none; }
         #cookie-banner.active { display: flex; }
+        .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+}
+.faq-item.active .faq-answer {
+    max-height: 500px; /* Een waarde die zeker hoger is dan de content */
+}
+.faq-item.active .faq-chevron {
+    transform: rotate(180deg);
+}
         
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
@@ -211,17 +222,47 @@
 
                             <div class="max-w-3xl mx-auto mb-16">
                                 <h3 class="text-2xl font-bold text-center mb-8">Veelgestelde Vragen</h3>
-                                <div id="faq-driver-container" class="relative faq-container">
-                                    <button class="faq-prev-driver absolute top-1/2 -translate-y-1/2 left-0 md:-left-16 bg-white p-3 rounded-full shadow-md text-gray-700 hover:bg-gray-100 z-10 transition">&lt;</button>
-                                    <div id="faq-carousel-driver" class="overflow-hidden">
-                                        <div class="flex transition-transform duration-300 ease-in-out">
-                                            <div class="w-full flex-shrink-0 px-2"><div class="bg-white p-8 rounded-2xl faq-card-shadow"><h4 class="text-lg font-bold">Hoeveel kan ik verdienen?</h4><p class="text-gray-600 mt-2">Als Founding Driver verdien je €350 per jaar, maandelijks uitbetaald, voor campagnes van 12 maanden.</p></div></div>
-                                            <div class="w-full flex-shrink-0 px-2"><div class="bg-white p-8 rounded-2xl faq-card-shadow"><h4 class="text-lg font-bold">Beschadigt de sticker mijn auto?</h4><p class="text-gray-600 mt-2">Nee, we gebruiken hoogwaardige, verwijderbare vinyl die speciaal is ontworpen voor auto's en geen schade achterlaat.</p></div></div>
-                                            <div class="w-full flex-shrink-0 px-2"><div class="bg-white p-8 rounded-2xl faq-card-shadow"><h4 class="text-lg font-bold">Wat als ik minder dan 750 km per maand rijd?</h4><p class="text-gray-600 mt-2">Geen probleem! Neem contact met ons op. We hebben flexibele oplossingen en kijken graag samen wat mogelijk is.</p></div></div>
-                                        </div>
-                                    </div>
-                                    <button class="faq-next-driver absolute top-1/2 -translate-y-1/2 right-0 md:-right-16 bg-white p-3 rounded-full shadow-md text-gray-700 hover:bg-gray-100 z-10 transition">&gt;</button>
-                                </div>
+                                <div id="faq-driver-container" class="relative max-w-3xl mx-auto">
+    <button class="faq-prev-driver absolute top-1/2 -translate-y-1/2 -left-4 md:-left-16 bg-white p-3 rounded-full shadow-md text-gray-700 hover:bg-gray-100 z-10 transition hidden md:block">&lt;</button>
+    <div id="faq-carousel-driver" class="overflow-hidden">
+        <div class="faq-items-wrapper space-y-4 md:space-y-0 md:flex md:transition-transform md:duration-300 md:ease-in-out">
+            <div class="faq-item w-full md:flex-shrink-0 md:px-2">
+                <div class="bg-white rounded-2xl faq-card-shadow overflow-hidden">
+                    <button class="faq-question w-full text-left p-6 font-bold text-lg flex justify-between items-center">
+                        <span>Hoeveel kan ik verdienen?</span>
+                        <svg class="faq-chevron w-5 h-5 transition-transform duration-300 shrink-0 md:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="faq-answer text-gray-600 transition-max-height duration-500 ease-in-out">
+                        <p class="p-6 pt-0">Als Founding Driver verdien je €350 per jaar, maandelijks uitbetaald, voor campagnes van 12 maanden.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="faq-item w-full md:flex-shrink-0 md:px-2">
+                <div class="bg-white rounded-2xl faq-card-shadow overflow-hidden">
+                    <button class="faq-question w-full text-left p-6 font-bold text-lg flex justify-between items-center">
+                        <span>Beschadigt de sticker mijn auto?</span>
+                         <svg class="faq-chevron w-5 h-5 transition-transform duration-300 shrink-0 md:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="faq-answer text-gray-600 transition-max-height duration-500 ease-in-out">
+                         <p class="p-6 pt-0">Nee, we gebruiken hoogwaardige, verwijderbare vinyl die speciaal is ontworpen voor auto's en geen schade achterlaat.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="faq-item w-full md:flex-shrink-0 md:px-2">
+                 <div class="bg-white rounded-2xl faq-card-shadow overflow-hidden">
+                    <button class="faq-question w-full text-left p-6 font-bold text-lg flex justify-between items-center">
+                        <span>Wat als ik minder dan 750 km per maand rijd?</span>
+                         <svg class="faq-chevron w-5 h-5 transition-transform duration-300 shrink-0 md:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="faq-answer text-gray-600 transition-max-height duration-500 ease-in-out">
+                         <p class="p-6 pt-0">Geen probleem! Neem contact met ons op. We hebben flexibele oplossingen en kijken graag samen wat mogelijk is.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="faq-next-driver absolute top-1/2 -translate-y-1/2 -right-4 md:-right-16 bg-white p-3 rounded-full shadow-md text-gray-700 hover:bg-gray-100 z-10 transition hidden md:block">&gt;</button>
+</div>
                             </div>
 
 
@@ -377,307 +418,276 @@
     </div>
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Mobile menu toggle
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
+ <script>
+document.addEventListener('DOMContentLoaded', function () {
+    // --- Gedeelde Variabelen & Functies ---
+    const modal = document.getElementById('join-modal');
+    const formContainer = document.getElementById('form-container');
+    const form = document.getElementById('waitlist-form');
+    const successCard = document.getElementById('success-card');
+    const copyLinkButton = document.getElementById('copy-link-button');
+    const messageEl = document.getElementById('modal-message');
 
-            // Hero Carousel
-            const carouselInner = document.querySelector('#hero-carousel .carousel-inner');
-            if (carouselInner) {
-                let currentIndex = 0;
-                const totalSlides = carouselInner.children.length;
-                setInterval(() => {
-                    currentIndex = (currentIndex + 1) % totalSlides;
-                    carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
-                }, 4000);
-            }
+    // --- Mobile menu toggle ---
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
 
-            // Tab functionality
-            const tabs = document.querySelectorAll('.tab-button');
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    const target = tab.getAttribute('data-tab');
-                    
-                    tabContents.forEach(content => {
-                         if (content.id === target) {
-                            content.classList.add('active');
-                            content.classList.remove('animate-fadeOut');
-                            content.classList.add('animate-fadeIn');
-                        } else {
-                            if (content.classList.contains('active')) {
-                                content.classList.remove('animate-fadeIn');
-                                content.classList.add('animate-fadeOut');
-                                setTimeout(() => content.classList.remove('active'), 300);
-                            }
-                        }
-                    });
-                    
-                    if (target === 'driver' && typeof driverCarousel !== 'undefined' && driverCarousel) {
-                        driverCarousel.updateHeight();
-                    } else if (target === 'advertiser' && typeof advertiserCarousel !== 'undefined' && advertiserCarousel) {
-                        advertiserCarousel.updateHeight();
-                    }
-                });
-            });
+    // --- Hero Carousel ---
+    const heroCarouselInner = document.querySelector('#hero-carousel .carousel-inner');
+    if (heroCarouselInner) {
+        let currentIndex = 0;
+        const totalSlides = heroCarouselInner.children.length;
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            heroCarouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }, 4000);
+    }
 
-            // FAQ Carousel
-            function setupCarousel(type) {
-                const container = document.getElementById(`faq-${type}-container`);
-                if (!container) return null;
-                const inner = container.querySelector(`#faq-carousel-${type} .flex`);
-                const prevBtn = container.querySelector(`.faq-prev-${type}`);
-                const nextBtn = container.querySelector(`.faq-next-${type}`);
-                let index = 0;
-                const totalItems = inner.children.length;
-
-                function updateHeight() {
-                    if(!inner.children[index]) return;
-                    const activeSlide = inner.children[index].firstElementChild;
-                    container.style.height = activeSlide.offsetHeight + 'px';
+    // --- Tab functionality ---
+    const tabs = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            const target = tab.getAttribute('data-tab');
+            tabContents.forEach(content => {
+                if (content.id === target) {
+                    content.classList.add('active', 'animate-fadeIn');
+                    content.classList.remove('animate-fadeOut');
+                } else if (content.classList.contains('active')) {
+                    content.classList.remove('animate-fadeIn');
+                    content.classList.add('animate-fadeOut');
+                    setTimeout(() => content.classList.remove('active'), 300);
                 }
-                
-                function reorderSlides() {
-                    if (type === 'advertiser') {
-                         const costSlide = Array.from(inner.children).find(slide => slide.querySelector('h4').textContent.includes('kosten'));
-                         if (costSlide && inner.firstChild !== costSlide) {
-                            inner.insertBefore(costSlide, inner.firstChild);
-                        }
-                    }
-                }
-
-                nextBtn.addEventListener('click', () => {
-                    index = (index + 1) % totalItems;
-                    inner.style.transform = `translateX(-${index * 100}%)`;
-                    updateHeight();
-                });
-                 prevBtn.addEventListener('click', () => {
-                    index = (index - 1 + totalItems) % totalItems;
-                    inner.style.transform = `translateX(-${index * 100}%)`;
-                    updateHeight();
-                });
-                
-                reorderSlides();
-                window.addEventListener('resize', updateHeight);
-                return { updateHeight };
-            }
-            const driverCarousel = setupCarousel('driver');
-            const advertiserCarousel = setupCarousel('advertiser');
-            if (driverCarousel) driverCarousel.updateHeight();
-            if (advertiserCarousel) advertiserCarousel.updateHeight();
-
-            // Modal functionality
-            const modal = document.getElementById('join-modal');
-            const openModalButtons = document.querySelectorAll('.open-modal-button');
-            const closeModalButton = document.getElementById('close-modal-button');
-            const formContainer = document.getElementById('form-container');
-            const form = document.getElementById('waitlist-form');
-            const successCard = document.getElementById('success-card');
-            const copyLinkButton = document.getElementById('copy-link-button');
-            const messageEl = document.getElementById('modal-message');
-
-            const updateModalContent = (type) => {
-                const modalTabs = document.querySelectorAll('.modal-tab-button');
-                const title = document.getElementById('modal-title');
-                const fields = document.getElementById('form-fields');
-                const consentFields = document.getElementById('consent-fields');
-                const submitButton = document.getElementById('modal-submit-button');
-                const disclaimer = document.getElementById('modal-disclaimer');
-                const recaptchaNotice = document.getElementById('recaptcha-notice');
-
-                let fieldsHTML = `
-                    <div><input type="text" name="name" placeholder="Jouw naam" class="w-full p-3 border border-gray-300 rounded-lg" required pattern="[A-Za-zÀ-ÖØ-öø-ÿ\\s'-]+" title="Gelieve enkel letters, spaties, en koppeltekens te gebruiken."></div>
-                    <div><input type="email" name="email" placeholder="Jouw e-mailadres" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
-                    <div id="extra-field-container"></div>
-                    <div><input type="tel" name="phone" placeholder="Telefoonnummer" class="w-full p-3 border border-gray-300 rounded-lg" required pattern="^[\\d\\s\\+\\-\\(\\)]+$" title="Gelieve een geldig telefoonnummer in te geven."></div>
-                `;
-                
-                fields.innerHTML = fieldsHTML;
-                const extraFieldContainer = document.getElementById('extra-field-container');
-                let consentHTML = '';
-
-                if (type === 'driver') {
-                    title.textContent = 'Join de Wachtlijst als Bestuurder';
-                    extraFieldContainer.innerHTML = '<div><input type="number" name="km" placeholder="Kilometers vorig jaar" class="w-full p-3 border border-gray-300 rounded-lg" required min="0" pattern="\\d+" title="Gelieve enkel cijfers in te geven."></div>';
-                    submitButton.textContent = 'Verzeker mijn plek';
-                    disclaimer.textContent = 'Slechts 500 plekken beschikbaar.';
-                    consentHTML = `
-                        <label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="age_confirm" class="mr-2 mt-1" required><span class="flex-1">Ik ben 18 jaar of ouder.</span></label>
-                        <label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="owner_confirm" class="mr-2 mt-1" required><span class="flex-1">Ik ben eigenaar van de wagen of heb toestemming van de eigenaar/lease-maatschappij.</span></label>
-                        <label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="marketing_consent" class="mr-2 mt-1"><span class="flex-1">Ik wil nieuws, updates en aanbiedingen ontvangen via e-mail/sms.</span></label>
-                    `;
-                } else { // advertiser
-                    title.textContent = 'Word een Launch Partner';
-                    extraFieldContainer.innerHTML = '<div><input type="text" name="company" placeholder="Naam bedrijf" class="w-full p-3 border border-gray-300 rounded-lg" required></div>';
-                    submitButton.textContent = 'Ik heb interesse!';
-                    disclaimer.textContent = 'Let op: er zijn meer aanmeldingen dan de 5 beschikbare partnerplekken.';
-                    consentHTML = `
-                        <label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="age_confirm" class="mr-2 mt-1" required><span class="flex-1">Ik ben 18 jaar of ouder.</span></label>
-                        <label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="marketing_consent" class="mr-2 mt-1"><span class="flex-1">Ik wil nieuws, updates en aanbiedingen ontvangen via e-mail/sms.</span></label>
-                    `;
-                }
-                consentFields.innerHTML = consentHTML;
-                recaptchaNotice.innerHTML = `Deze site wordt beschermd door reCAPTCHA en het <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="underline">Privacybeleid</a> en de <a href="https://policies.google.com/terms" target="_blank" rel="noopener" class="underline">Servicevoorwaarden</a> van Google zijn van toepassing.`;
-
-                // Update de active state van de switcher in de modal
-                modalTabs.forEach(tab => {
-                    if (tab.getAttribute('data-tab') === type) {
-                        tab.classList.add('active');
-                    } else {
-                        tab.classList.remove('active');
-                    }
-                });
-            };
-            
-            const handleFormSubmit = async (e) => {
-                e.preventDefault();
-                messageEl.textContent = '';
-                messageEl.classList.remove('text-green-600', 'text-red-600');
-
-                if (!form.checkValidity()) {
-                    form.reportValidity();
-                    return;
-                }
-                
-                const recaptchaToken = grecaptcha.getResponse();
-                if (recaptchaToken.length === 0) {
-                    messageEl.textContent = 'Please complete the "I\'m not a robot" check.';
-                    messageEl.classList.add('text-red-600');
-                    return; 
-                }
-                
-                messageEl.textContent = 'Submitting...';
-                
-                const formData = {};
-                new FormData(e.target).forEach((value, key) => {
-                    formData[key] = value;
-                });
-
-                const activeTab = document.querySelector('.tab-button.active').getAttribute('data-tab');
-
-                try {
-                    const response = await fetch('/api/join', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            formData: formData,
-                            recaptchaToken: recaptchaToken,
-                            formType: activeTab
-                        }),
-                    });
-
-                    const result = await response.json();
-
-                    if (response.ok) {
-                        confetti({
-                            particleCount: 100,
-                            spread: 70,
-                            origin: { y: 0.6 },
-                            colors: ['#F97316', '#1a202c', '#FFFFFF']
-                        });
-                        formContainer.classList.add('hidden');
-                        successCard.classList.remove('hidden');
-                    } else {
-                        messageEl.textContent = result.message || 'An error occurred. Please try again.';
-                        messageEl.classList.add('text-red-600');
-                        grecaptcha.reset();
-                    }
-                } catch (error) {
-                    messageEl.textContent = 'A network error occurred. Please try again.';
-                    messageEl.classList.add('text-red-600');
-                    grecaptcha.reset();
-                }
-            };
-
-            copyLinkButton.addEventListener('click', () => {
-                navigator.clipboard.writeText(window.location.origin || window.location.href).then(() => {
-                    copyLinkButton.textContent = 'Gekopieerd!';
-                    setTimeout(() => {
-                        copyLinkButton.textContent = 'Kopieer Link';
-                    }, 2000);
-                });
-            });
-
-            openModalButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    form.reset();
-                    if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
-                    messageEl.textContent = '';
-                    formContainer.classList.remove('hidden');
-                    successCard.classList.add('hidden');
-                    copyLinkButton.textContent = 'Kopieer Link';
-                    const activeTab = document.querySelector('.tab-button.active').getAttribute('data-tab');
-                    updateModalContent(activeTab);
-                    modal.style.display = 'flex';
-                });
-            });
-
-            closeModalButton.addEventListener('click', () => {
-                modal.style.display = 'none';
-            });
-            
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
-
-            form.addEventListener('submit', handleFormSubmit);
-
-            const initialTab = document.querySelector('.tab-button.active').getAttribute('data-tab');
-            updateModalContent(initialTab);
-
-            // --- Cookie Banner Logic ---
-            const cookieBanner = document.getElementById('cookie-banner');
-            const acceptBtn = document.getElementById('cookie-accept');
-            const declineBtn = document.getElementById('cookie-decline');
-
-            if (!localStorage.getItem('cookie_consent')) {
-                cookieBanner.classList.add('active');
-            }
-
-            acceptBtn.addEventListener('click', () => {
-                localStorage.setItem('cookie_consent', 'accepted');
-                cookieBanner.classList.remove('active');
-            });
-
-            declineBtn.addEventListener('click', () => {
-                localStorage.setItem('cookie_consent', 'declined');
-                cookieBanner.classList.remove('active');
-            });
-
-            // --- Logica voor "Join" knoppen in de header ---
-            const headerJoinButtons = document.querySelectorAll('.header-join-button');
-            headerJoinButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    form.reset();
-                    if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
-                    messageEl.textContent = '';
-                    formContainer.classList.remove('hidden');
-                    successCard.classList.add('hidden');
-                    copyLinkButton.textContent = 'Kopieer Link';
-                    updateModalContent('driver'); 
-                    modal.style.display = 'flex';
-                });
-            });
-
-            // --- Logica voor de switcher IN de modal ---
-            const modalTabs = document.querySelectorAll('.modal-tab-button');
-            modalTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const selectedTab = tab.getAttribute('data-tab');
-                    updateModalContent(selectedTab);
-                });
             });
         });
-    </script>
+    });
+
+    // --- RESPONSIVE FAQ LOGICA ---
+    function setupAccordion(container) {
+        const faqItems = container.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            // Verwijder oude event listeners om duplicatie te voorkomen
+            const newQuestion = question.cloneNode(true);
+            question.parentNode.replaceChild(newQuestion, question);
+            
+            newQuestion.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                // Sluit alle items
+                faqItems.forEach(otherItem => otherItem.classList.remove('active'));
+                // Open de geklikte item, tenzij het al open was
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    }
+
+    function setupCarousel(type) {
+        const container = document.getElementById(`faq-${type}-container`);
+        if (!container) return;
+        const inner = container.querySelector('.faq-items-wrapper');
+        const prevBtn = container.querySelector(`.faq-prev-${type}`);
+        const nextBtn = container.querySelector(`.faq-next-${type}`);
+        let index = 0;
+        const totalItems = inner.querySelectorAll('.faq-item').length;
+
+        function updateCarousel() {
+            if(inner) {
+               inner.style.transform = `translateX(-${index * 100 / totalItems}%)`; // Aangepast voor flex-basis
+            }
+        }
+        
+        // Clone nodes to remove old listeners
+        const newNextBtn = nextBtn.cloneNode(true);
+        nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+        newNextBtn.addEventListener('click', () => {
+            index = (index + 1) % totalItems;
+            updateCarousel();
+        });
+
+        const newPrevBtn = prevBtn.cloneNode(true);
+        prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
+        newPrevBtn.addEventListener('click', () => {
+            index = (index - 1 + totalItems) % totalItems;
+            updateCarousel();
+        });
+    }
+    
+    // Functie om de juiste weergave te kiezen
+    let currentDisplayMode = '';
+    function handleFaqDisplay() {
+        const isMobile = window.innerWidth < 768;
+        const newDisplayMode = isMobile ? 'accordion' : 'carousel';
+
+        // Voer alleen uit als de modus verandert om onnodige re-initialisatie te voorkomen
+        if (newDisplayMode === currentDisplayMode) {
+            return;
+        }
+        currentDisplayMode = newDisplayMode;
+
+        const driverContainer = document.getElementById('faq-driver-container');
+        const advertiserContainer = document.getElementById('faq-advertiser-container');
+        
+        if (driverContainer) {
+            if (isMobile) {
+                setupAccordion(driverContainer);
+            } else {
+                setupCarousel('driver');
+            }
+        }
+        if (advertiserContainer) {
+            if (isMobile) {
+                setupAccordion(advertiserContainer);
+            } else {
+                setupCarousel('advertiser');
+            }
+        }
+    }
+
+    handleFaqDisplay();
+    window.addEventListener('resize', handleFaqDisplay);
+    
+    // --- Modal functionality ---
+    const updateModalContent = (type) => {
+        const modalTabs = document.querySelectorAll('.modal-tab-button');
+        const title = document.getElementById('modal-title');
+        const fields = document.getElementById('form-fields');
+        const consentFields = document.getElementById('consent-fields');
+        const submitButton = document.getElementById('modal-submit-button');
+        const disclaimer = document.getElementById('modal-disclaimer');
+        const recaptchaNotice = document.getElementById('recaptcha-notice');
+        
+        let fieldsHTML = `<div><input type="text" name="name" placeholder="Jouw naam" class="w-full p-3 border border-gray-300 rounded-lg" required></div><div><input type="email" name="email" placeholder="Jouw e-mailadres" class="w-full p-3 border border-gray-300 rounded-lg" required></div><div id="extra-field-container"></div><div><input type="tel" name="phone" placeholder="Telefoonnummer" class="w-full p-3 border border-gray-300 rounded-lg" required></div>`;
+        fields.innerHTML = fieldsHTML;
+        const extraFieldContainer = document.getElementById('extra-field-container');
+        let consentHTML = '';
+
+        if (type === 'driver') {
+            title.textContent = 'Join de Wachtlijst als Bestuurder';
+            extraFieldContainer.innerHTML = '<div><input type="number" name="km" placeholder="Kilometers vorig jaar" class="w-full p-3 border border-gray-300 rounded-lg" required></div>';
+            submitButton.textContent = 'Verzeker mijn plek';
+            disclaimer.textContent = 'Slechts 500 plekken beschikbaar.';
+            consentHTML = `<label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="age_confirm" class="mr-2 mt-1" required><span class="flex-1">Ik ben 18 jaar of ouder.</span></label><label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="owner_confirm" class="mr-2 mt-1" required><span class="flex-1">Ik ben eigenaar van de wagen of heb toestemming van de eigenaar/lease-maatschappij.</span></label><label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="marketing_consent" class="mr-2 mt-1"><span class="flex-1">Ik wil nieuws, updates en aanbiedingen ontvangen via e-mail/sms.</span></label>`;
+        } else { // advertiser
+            title.textContent = 'Word een Launch Partner';
+            extraFieldContainer.innerHTML = '<div><input type="text" name="company" placeholder="Naam bedrijf" class="w-full p-3 border border-gray-300 rounded-lg" required></div>';
+            submitButton.textContent = 'Ik heb interesse!';
+            disclaimer.textContent = 'Let op: er zijn meer aanmeldingen dan de 5 beschikbare partnerplekken.';
+            consentHTML = `<label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="age_confirm" class="mr-2 mt-1" required><span class="flex-1">Ik ben 18 jaar of ouder.</span></label><label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="marketing_consent" class="mr-2 mt-1"><span class="flex-1">Ik wil nieuws, updates en aanbiedingen ontvangen via e-mail/sms.</span></label>`;
+        }
+        consentFields.innerHTML = consentHTML;
+        recaptchaNotice.innerHTML = `Deze site wordt beschermd door reCAPTCHA en het <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="underline">Privacybeleid</a> en de <a href="https://policies.google.com/terms" target="_blank" rel="noopener" class="underline">Servicevoorwaarden</a> van Google zijn van toepassing.`;
+
+        modalTabs.forEach(tab => {
+            tab.classList.toggle('active', tab.getAttribute('data-tab') === type);
+        });
+    };
+    
+    const handleFormSubmit = async (e) => { e.preventDefault(); 
+        messageEl.textContent = '';
+        messageEl.classList.remove('text-green-600', 'text-red-600');
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+        const recaptchaToken = grecaptcha.getResponse();
+        if (recaptchaToken.length === 0) {
+            messageEl.textContent = 'Please complete the "I\'m not a robot" check.';
+            messageEl.classList.add('text-red-600');
+            return; 
+        }
+        messageEl.textContent = 'Submitting...';
+        const formData = {};
+        new FormData(e.target).forEach((value, key) => { formData[key] = value; });
+        const activeTab = document.querySelector('.tab-button.active').getAttribute('data-tab');
+        try {
+            const response = await fetch('/api/join', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ formData, recaptchaToken, formType: activeTab }),
+            });
+            const result = await response.json();
+            if (response.ok) {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#F97316', '#1a202c', '#FFFFFF'] });
+                formContainer.classList.add('hidden');
+                successCard.classList.remove('hidden');
+            } else {
+                messageEl.textContent = result.message || 'An error occurred. Please try again.';
+                messageEl.classList.add('text-red-600');
+                grecaptcha.reset();
+            }
+        } catch (error) {
+            messageEl.textContent = 'A network error occurred. Please try again.';
+            messageEl.classList.add('text-red-600');
+            grecaptcha.reset();
+        }
+    };
+    copyLinkButton.addEventListener('click', () => {
+        navigator.clipboard.writeText(window.location.origin || window.location.href).then(() => {
+            copyLinkButton.textContent = 'Gekopieerd!';
+            setTimeout(() => { copyLinkButton.textContent = 'Kopieer Link'; }, 2000);
+        });
+    });
+    const openModalButtons = document.querySelectorAll('.open-modal-button');
+    openModalButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            form.reset();
+            if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
+            messageEl.textContent = '';
+            formContainer.classList.remove('hidden');
+            successCard.classList.add('hidden');
+            copyLinkButton.textContent = 'Kopieer Link';
+            const activeTab = document.querySelector('.tab-button.active').getAttribute('data-tab');
+            updateModalContent(activeTab);
+            modal.style.display = 'flex';
+        });
+    });
+    const closeModalButton = document.getElementById('close-modal-button');
+    closeModalButton.addEventListener('click', () => { modal.style.display = 'none'; });
+    modal.addEventListener('click', (e) => { if (e.target === modal) { modal.style.display = 'none'; } });
+    form.addEventListener('submit', handleFormSubmit);
+    const initialTab = document.querySelector('.tab-button.active').getAttribute('data-tab');
+    updateModalContent(initialTab);
+    
+    // Cookie Banner Logic
+    const cookieBanner = document.getElementById('cookie-banner');
+    const acceptBtn = document.getElementById('cookie-accept');
+    const declineBtn = document.getElementById('cookie-decline');
+    if (!localStorage.getItem('cookie_consent')) { cookieBanner.classList.add('active'); }
+    acceptBtn.addEventListener('click', () => { localStorage.setItem('cookie_consent', 'accepted'); cookieBanner.classList.remove('active'); });
+    declineBtn.addEventListener('click', () => { localStorage.setItem('cookie_consent', 'declined'); cookieBanner.classList.remove('active'); });
+    
+    // Header Join Buttons
+    const headerJoinButtons = document.querySelectorAll('.header-join-button');
+    headerJoinButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            form.reset();
+            if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
+            messageEl.textContent = '';
+            formContainer.classList.remove('hidden');
+            successCard.classList.add('hidden');
+            copyLinkButton.textContent = 'Kopieer Link';
+            updateModalContent('driver'); 
+            modal.style.display = 'flex';
+        });
+    });
+    
+    // Modal Switcher
+    const modalTabs = document.querySelectorAll('.modal-tab-button');
+    modalTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const selectedTab = tab.getAttribute('data-tab');
+            updateModalContent(selectedTab);
+        });
+    });
+});
+</script>
 
 </body>
 </html>
