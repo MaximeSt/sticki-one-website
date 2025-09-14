@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Subverwerkers • Sticki.one</title>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -23,32 +19,36 @@
 
   <main class="max-w-4xl mx-auto px-4 py-12">
     <h1 class="text-3xl md:text-4xl font-black mb-6">Subverwerkers</h1>
-    <p class="text-gray-600 mb-8">Wij werken met onderstaande partijen (verwerkers) om onze diensten veilig en performant te leveren. Wij sluiten met elk van hen een verwerkersovereenkomst (DPA). Locaties binnen de EU, tenzij anders vermeld. Bij doorgifte buiten de EER gebruiken we passende waarborgen (SCC’s).</p>
+    <p class="text-gray-600 mb-8">We schakelen onderstaande verwerkers in om de site veilig en performant te houden. Bij doorgifte buiten de EER gebruiken we passende waarborgen (bv. <em>Standard Contractual Clauses</em>). Status: “actief”=in gebruik, “optioneel”=wordt pas geactiveerd bij livegang of na toestemming.</p>
 
     <div class="bg-white rounded-2xl shadow divide-y">
       <div class="p-6">
-        <h2 class="font-bold">Hosting & opslag</h2>
-        <p>Bijv. AWS eu-west-1 / GCP europe-west — Compute, database en opslag.</p>
+        <h2 class="font-bold">Hosting & CDN – <span class="font-normal">Vercel</span> (actief)</h2>
+        <p>Serverless hosting, edge-/build-infrastructuur en routing. Locaties EU/wereldwijd; beperkte operationele logs. Doorgifte: SCC’s waar nodig.</p>
       </div>
       <div class="p-6">
-        <h2 class="font-bold">E-mail/SMS</h2>
-        <p>Bijv. Mailjet/Sendgrid/Twilio — Transactionele e-mail en opt-in marketing (alleen na toestemming).</p>
+        <h2 class="font-bold">DNS/Domain – <span class="font-normal">Squarespace Domains</span> (actief)</h2>
+        <p>Domein- en DNS-beheer (sticki.one). Verwerkt enkel noodzakelijke registrant/DNS-gegevens.</p>
       </div>
       <div class="p-6">
-        <h2 class="font-bold">Beveiliging</h2>
-        <p>Google reCAPTCHA (VS, SCC’s) — Bot-protectie bij formulieren.</p>
+        <h2 class="font-bold">Beveiliging – <span class="font-normal">Google reCAPTCHA</span> (actief)</h2>
+        <p>Bot-protectie voor formulieren. Locatie: wereldwijd/VS; waarborgen via SCC’s.</p>
       </div>
       <div class="p-6">
-        <h2 class="font-bold">Analytics</h2>
-        <p>Bijv. Plausible (EU) of Google Analytics (alleen na toestemming; IP-anonimisering).</p>
+        <h2 class="font-bold">E-mail/SMS – <span class="font-normal">Mailjet/Sendgrid/Twilio</span> (optioneel)</h2>
+        <p>Transactionele e-mail en opt-in marketing (pas na toestemming/double opt-in). EU-datacenters waar mogelijk; SCC’s indien buiten EER.</p>
       </div>
       <div class="p-6">
-        <h2 class="font-bold">Betalingsverwerking (bij livegang)</h2>
-        <p>Bijv. Stripe Connect/PSP — uitbetalingen aan bestuurders, KYC/AML.</p>
+        <h2 class="font-bold">Analytics – <span class="font-normal">Plausible (EU) of Google Analytics</span> (optioneel)</h2>
+        <p>Alleen na toestemming. Bij GA: IP-anonimisering + SCC’s.</p>
+      </div>
+      <div class="p-6">
+        <h2 class="font-bold">Betalingen – <span class="font-normal">Stripe/PSP</span> (optioneel – bij livegang)</h2>
+        <p>Uitbetalingen aan bestuurders, KYC/AML. EU entiteiten waar mogelijk; SCC’s voor internationale doorgifte.</p>
       </div>
     </div>
 
-    <p class="text-sm text-gray-600 mt-6">Wijzigingen aan deze lijst worden hier gepubliceerd. Bij materiële wijzigingen informeren we actieve klanten per e-mail.</p>
+    <p class="text-sm text-gray-600 mt-6">Wijzigingen aan deze lijst worden hier gepubliceerd; bij materiële wijzigingen informeren we actieve gebruikers per e-mail.</p>
   </main>
 
   <footer class="bg-gray-900 text-white py-10 mt-12">
