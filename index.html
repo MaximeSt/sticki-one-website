@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <!-- reCAPTCHA Script v2 -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <style>
@@ -124,7 +123,6 @@
 </head>
 <body class="text-gray-800">
 
-    <!-- Preloader -->
     <div id="preloader" class="fixed inset-0 bg-white z-[9999] flex items-center justify-center">
         <div id="preloader-logo">
             <div class="flex items-center gap-2 text-4xl font-bold">
@@ -135,19 +133,16 @@
     </div>
 
     <div class="page-content">
-        <!-- Header -->
         <header class="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-lg z-50 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-20">
                     <div class="flex-shrink-0">
-                        <a href="index.html" class="flex items-center gap-2 text-2xl font-bold opacity-0" id="header-logo"> <!-- Initially hidden for animation -->
-                            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="16" fill="#F97316"/></svg>
+                        <a href="index.html" class="flex items-center gap-2 text-2xl font-bold opacity-0" id="header-logo"> <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="16" fill="#F97316"/></svg>
                             <span class="font-medium text-gray-900">Sticki</span><span class="font-light text-gray-700">.one</span>
                         </a>
                     </div>
                     <div class="hidden md:flex items-center space-x-8">
-                        <a href="drivers.html" class="text-gray-600 hover:text-orange-600 transition">Voor Bestuurders</a>
-                        <a href="advertisers.html" class="text-gray-600 hover:text-orange-600 transition">Voor Adverteerders</a>
+                        
                     </div>
                     <div class="hidden md:block">
                          <a href="#join-section" class="bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-900 transition shadow-md">Join de Wachtlijst</a>
@@ -160,14 +155,11 @@
                 </div>
             </div>
             <div id="mobile-menu" class="md:hidden hidden bg-white p-4">
-                <a href="drivers.html" class="block text-gray-600 hover:text-orange-600 transition py-2">Voor Bestuurders</a>
-                <a href="advertisers.html" class="block text-gray-600 hover:text-orange-600 transition py-2">Voor Adverteerders</a>
-                <a href="#join-section" class="mt-2 block w-full text-center bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-900 transition">Join de Wachtlijst</a>
+                <a href="#join-section" class="block w-full text-center bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-900 transition">Join de Wachtlijst</a>
             </div>
         </header>
 
         <main>
-            <!-- Hero Section -->
             <section class="pt-28 pb-16 gradient-bg">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h1 class="text-4xl md:text-6xl font-black text-gray-900 leading-tight">Your Car. Your Canvas. Your Cash.</h1>
@@ -184,7 +176,6 @@
                 </div>
             </section>
 
-            <!-- FOMO Section -->
             <section class="py-20 bg-white">
                 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h2 class="text-4xl font-bold text-gray-900">De lancering komt eraan.</h2>
@@ -202,7 +193,6 @@
                 </div>
             </section>
 
-            <!-- Interactive Join Section -->
             <section id="join-section" class="py-20 bg-gray-50 overflow-hidden">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-12">
@@ -210,7 +200,6 @@
                         <p class="mt-4 max-w-2xl mx-auto text-gray-600">Kies je rol en ontdek de stappen, voordelen en schrijf je in voor de exclusieve eerste drop.</p>
                     </div>
 
-                    <!-- Tabs -->
                     <div class="flex justify-center mb-12">
                         <div class="bg-gray-200 p-1 rounded-xl flex items-center space-x-1">
                             <button class="tab-button py-3 px-8 rounded-lg font-semibold active" data-tab="driver">Ik ben Bestuurder</button>
@@ -218,12 +207,9 @@
                         </div>
                     </div>
 
-                    <!-- Tab Content -->
                     <div id="tab-content-container" class="relative">
                         
-                        <!-- Driver Content -->
                         <div id="driver" class="tab-content active animate-fadeIn">
-                            <!-- Step-by-step -->
                             <div class="text-center mb-16">
                                 <h3 class="text-2xl font-bold mb-8">Wat gebeurt er na je inschrijving?</h3>
                                 <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
@@ -245,7 +231,6 @@
                                 </div>
                             </div>
 
-                            <!-- FAQ Carousel -->
                             <div class="max-w-3xl mx-auto mb-16">
                                 <h3 class="text-2xl font-bold text-center mb-8">Veelgestelde Vragen</h3>
                                 <div id="faq-driver-container" class="relative faq-container">
@@ -262,7 +247,6 @@
                             </div>
 
 
-                            <!-- Why Now & Join Button -->
                             <div class="text-center mb-16">
                                 <div class="gradient-border-card mb-8">
                                     <div class="card-content p-8">
@@ -281,9 +265,7 @@
                             </div>
                         </div>
 
-                        <!-- Advertiser Content -->
                         <div id="advertiser" class="tab-content">
-                            <!-- Step-by-step -->
                             <div class="text-center mb-16">
                                 <h3 class="text-2xl font-bold mb-8">Wat gebeurt er na je aanvraag?</h3>
                                 <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
@@ -305,15 +287,13 @@
                                 </div>
                             </div>
 
-                             <!-- FAQ Carousel -->
-                            <div class="max-w-3xl mx-auto mb-16">
+                             <div class="max-w-3xl mx-auto mb-16">
                                 <h3 class="text-2xl font-bold text-center mb-8">Veelgestelde Vragen</h3>
                                 <div id="faq-advertiser-container" class="relative faq-container">
                                    <button class="faq-prev-advertiser absolute top-1/2 -translate-y-1/2 left-0 md:-left-16 bg-white p-3 rounded-full shadow-md text-gray-700 hover:bg-gray-100 z-10 transition">&lt;</button>
                                     <div id="faq-carousel-advertiser" class="overflow-hidden">
                                         <div class="flex transition-transform duration-300 ease-in-out">
-                                            <!-- FAQ items here -->
-                                             <div class="w-full flex-shrink-0 px-2"><div class="bg-white p-8 rounded-2xl faq-card-shadow"><h4 class="font-bold text-lg">Wat zijn de kosten?</h4><p class="text-gray-600 mt-2">Voor de launch werken we zonder marge. Ons doel: voor de prijs van één busadvertentie krijg je bij ons 50 wagenadvertenties, en voor de prijs van één billboard 40 wagenadvertenties.<br><br>In alle transparantie focussen we erop om drivers netto €30–50 per maand te laten verdienen, terwijl Sticki.one de belasting, marketing en kost van de stickers volledig op zich neemt.<br><br>✨ Als launch partner hou je voor altijd onze no-margin bodemprijs, plus extra voordelen. ❤️<br>Neem contact op en maak kans om één van de 5 geselecteerde launch partners te worden.</p></div></div>
+                                            <div class="w-full flex-shrink-0 px-2"><div class="bg-white p-8 rounded-2xl faq-card-shadow"><h4 class="font-bold text-lg">Wat zijn de kosten?</h4><p class="text-gray-600 mt-2">Voor de launch werken we zonder marge. Ons doel: voor de prijs van één busadvertentie krijg je bij ons 50 wagenadvertenties, en voor de prijs van één billboard 40 wagenadvertenties.<br><br>In alle transparantie focussen we erop om drivers netto €30–50 per maand te laten verdienen, terwijl Sticki.one de belasting, marketing en kost van de stickers volledig op zich neemt.<br><br>✨ Als launch partner hou je voor altijd onze no-margin bodemprijs, plus extra voordelen. ❤️<br>Neem contact op en maak kans om één van de 5 geselecteerde launch partners te worden.</p></div></div>
                                             <div class="w-full flex-shrink-0 px-2"><div class="bg-white p-8 rounded-2xl faq-card-shadow"><h4 class="font-bold text-lg">Wat is de impact?</h4><p class="text-gray-600 mt-2">Met 200 wagens transformeer je het straatbeeld in jouw doelregio. Je logo is overal, wat zorgt voor een enorme merkbekendheid. Bovendien worden de bestuurders ambassadeurs die over je merk praten.</p></div></div>
                                             <div class="w-full flex-shrink-0 px-2"><div class="bg-white p-8 rounded-2xl faq-card-shadow"><h4 class="font-bold text-lg">Hoe wordt de kwaliteit gegarandeerd?</h4><p class="text-gray-600 mt-2">Elke maand wordt het aantal gereden kilometers, aanwezigheid en staat van de sticker geverifieerd via foto's. Bestuurders worden pas betaald na goedkeuring, wat kwaliteit verzekert. Adverteerders krijgen elk maand een overzicht van de impact van hun campagne in OTS (opportunities to see) en het meer betrouwbare VAC (Visibility Adjusted Contacts).</p></div></div>
                                             <div class="w-full flex-shrink-0 px-2"><div class="bg-white p-8 rounded-2xl faq-card-shadow"><h4 class="font-bold text-lg">Wat is VAC (Visibility Adjusted Contacts)?</h4><p class="text-gray-600 mt-2">VAC is dé standaard om OOH-campagnes te meten. Het houdt rekening met de grootte, snelheid en zichtbaarheid van de reclame om een betrouwbaar cijfer te geven dat de werkelijke impact weergeeft, in tegenstelling tot ruwe impressies (OTS).</p></div></div>
@@ -323,7 +303,6 @@
                                 </div>
                             </div>
 
-                            <!-- Why Now & Join Button -->
                             <div class="text-center mb-16">
                                 <div class="gradient-border-card mb-8">
                                     <div class="card-content p-8">
@@ -347,7 +326,6 @@
         </main>
     </div>
 
-    <!-- Footer -->
     <footer class="bg-gray-900 text-white py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
              <div class="flex justify-center space-x-6">
@@ -361,24 +339,18 @@
         </div>
     </footer>
 
-    <!-- Modal -->
     <div id="join-modal" class="form-modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4 z-[100]">
         <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full relative animate-slideIn">
             <button id="close-modal-button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 text-2xl">&times;</button>
             <form id="waitlist-form">
                 <h3 id="modal-title" class="text-2xl font-bold text-center mb-6"></h3>
                 <div id="form-fields" class="space-y-4">
-                    <!-- Dynamic fields will be inserted here -->
-                </div>
+                    </div>
                 
                 <div id="consent-fields" class="space-y-3 mt-6">
-                    <!-- Dynamic consent checkboxes will be here -->
-                </div>
+                    </div>
                 
-                <!-- reCAPTCHA v2 Widget -->
-                <div class="g-recaptcha my-4 flex justify-center" data-sitekey="6Lf-FskrAAAAAB1UZzt92dUck8MgbDdWn5gcSkjh"></div> <!-- VERVANG YOUR_SITE_KEY -->
-                
-                <button id="modal-submit-button" type="submit" class="w-full mt-2 bg-gray-800 text-white font-bold py-3 rounded-lg hover:bg-gray-900 transition"></button>
+                <div class="g-recaptcha my-4 flex justify-center" data-sitekey="YOUR_SITE_KEY"></div> <button id="modal-submit-button" type="submit" class="w-full mt-2 bg-gray-800 text-white font-bold py-3 rounded-lg hover:bg-gray-900 transition"></button>
                 <p id="modal-disclaimer" class="text-xs text-gray-500 mt-2 text-center"></p>
 
                 <p class="text-xs text-gray-500 mt-4 text-center">
@@ -393,7 +365,6 @@
         </div>
     </div>
     
-    <!-- Cookie Banner -->
     <div id="cookie-banner" class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-6 shadow-2xl z-[101] animate-slideInUp">
         <div class="max-w-7xl mx-auto md:flex items-center justify-between">
             <p class="text-sm md:max-w-xl mb-4 md:mb-0">
@@ -426,8 +397,8 @@
                     headerLogo.style.opacity = '1';
 
                     // Set initial height of carousels AFTER page is loaded and visible
-                    driverCarousel.updateHeight();
-                    advertiserCarousel.updateHeight();
+                    if (typeof driverCarousel !== 'undefined') driverCarousel.updateHeight();
+                    if (typeof advertiserCarousel !== 'undefined') advertiserCarousel.updateHeight();
                     
                 }, 1200);
 
@@ -447,12 +418,14 @@
 
             // Hero Carousel
             const carouselInner = document.querySelector('#hero-carousel .carousel-inner');
-            let currentIndex = 0;
-            const totalSlides = carouselInner.children.length;
-            setInterval(() => {
-                currentIndex = (currentIndex + 1) % totalSlides;
-                carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
-            }, 4000);
+            if (carouselInner) {
+                let currentIndex = 0;
+                const totalSlides = carouselInner.children.length;
+                setInterval(() => {
+                    currentIndex = (currentIndex + 1) % totalSlides;
+                    carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+                }, 4000);
+            }
 
             // Tab functionality
             const tabs = document.querySelectorAll('.tab-button');
@@ -478,9 +451,9 @@
                     });
                     
                     // Recalculate height on tab switch to prevent overlap
-                    if (target === 'driver') {
+                    if (target === 'driver' && typeof driverCarousel !== 'undefined') {
                         driverCarousel.updateHeight();
-                    } else if (target === 'advertiser') {
+                    } else if (target === 'advertiser' && typeof advertiserCarousel !== 'undefined') {
                         advertiserCarousel.updateHeight();
                     }
                 });
@@ -489,7 +462,7 @@
             // FAQ Carousel
             function setupCarousel(type) {
                 const container = document.getElementById(`faq-${type}-container`);
-                if (!container) return;
+                if (!container) return null;
                 const inner = container.querySelector(`#faq-carousel-${type} .flex`);
                 const prevBtn = container.querySelector(`.faq-prev-${type}`);
                 const nextBtn = container.querySelector(`.faq-next-${type}`);
@@ -525,7 +498,7 @@
                 reorderSlides();
                 
                 window.addEventListener('resize', updateHeight);
-
+                
                 return { updateHeight };
             }
             const driverCarousel = setupCarousel('driver');
@@ -549,9 +522,11 @@
 
                 let fieldsHTML = `
                     <div><input type="text" name="name" placeholder="Jouw naam" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                    <div><input type="email" name="email" placeholder="Jouw e-mailadres" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
                     <div id="extra-field-container"></div>
                     <div><input type="tel" name="phone" placeholder="Telefoonnummer" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
                 `;
+                
                 fields.innerHTML = fieldsHTML;
                 const extraFieldContainer = document.getElementById('extra-field-container');
                 let consentHTML = '';
@@ -581,33 +556,64 @@
 
             };
             
-            const handleFormSubmit = (e) => {
+            const handleFormSubmit = async (e) => {
                 e.preventDefault();
-                messageEl.textContent = '';
+                messageEl.textContent = 'Submitting...';
                 messageEl.classList.remove('text-green-600', 'text-red-600');
                 
-                const recaptchaResponse = grecaptcha.getResponse();
-                if (recaptchaResponse.length === 0) {
-                    messageEl.textContent = 'Vink a.u.b. het "Ik ben geen robot" vakje aan.';
+                const recaptchaToken = grecaptcha.getResponse();
+                if (recaptchaToken.length === 0) {
+                    messageEl.textContent = 'Please complete the "I\'m not a robot" check.';
                     messageEl.classList.add('text-red-600');
                     return; 
                 }
                 
-                // Simulate form submission
-                setTimeout(() => {
-                    messageEl.textContent = 'Check je inbox/sms om je inschrijving te bevestigen.';
-                    messageEl.classList.add('text-green-600');
-                    
-                    confetti({
-                        particleCount: 100,
-                        spread: 70,
-                        origin: { y: 0.6 },
-                        colors: ['#F97316', '#1a202c', '#FFFFFF']
+                // Get form data
+                const formData = {};
+                new FormData(e.target).forEach((value, key) => {
+                    formData[key] = value;
+                });
+
+                const activeTab = document.querySelector('.tab-button.active').getAttribute('data-tab');
+
+                try {
+                    const response = await fetch('/api/join', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            formData: formData,
+                            recaptchaToken: recaptchaToken,
+                            formType: activeTab
+                        }),
                     });
 
-                    form.reset();
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        messageEl.textContent = result.message || 'Check your inbox/sms to confirm your registration.';
+                        messageEl.classList.add('text-green-600');
+                        
+                        confetti({
+                            particleCount: 100,
+                            spread: 70,
+                            origin: { y: 0.6 },
+                            colors: ['#F97316', '#1a202c', '#FFFFFF']
+                        });
+
+                        form.reset();
+                        grecaptcha.reset();
+                    } else {
+                        // Handle errors from the API
+                        messageEl.textContent = result.message || 'An error occurred. Please try again.';
+                        messageEl.classList.add('text-red-600');
+                        grecaptcha.reset();
+                    }
+
+                } catch (error) {
+                    messageEl.textContent = 'A network error occurred. Please try again.';
+                    messageEl.classList.add('text-red-600');
                     grecaptcha.reset();
-                }, 500);
+                }
             };
 
             openModalButtons.forEach(button => {
@@ -662,4 +668,3 @@
 
 </body>
 </html>
-
