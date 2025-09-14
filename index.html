@@ -609,8 +609,56 @@ document.addEventListener('DOMContentLoaded', function () {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         if (!validateStep(2)) return;
+
         messageEl.textContent = 'Verzenden...';
-        // Hier zou de volledige fetch-logica komen
+        messageEl.classList.remove('text-green-600', 'text-red-600');
+
+        const recaptchaToken = grecaptcha.getResponse();
+        if (recaptchaToken.length === 0) {
+            messageEl.textContent = 'Voltooi a.u.b. de "Ik ben geen robot" controle.';
+            messageEl.classList.add('text-red-600');
+            return; 
+        }
+
+        const formData = {};
+        new FormData(form).forEach((value, key) => {
+            formData[key] = value;
+        });
+
+        const formType = document.querySelector('.modal-tab-button.active').getAttribute('data-tab');
+
+        try {
+            const response = await fetch('/api/join', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    formData: formData,
+                    recaptchaToken: recaptchaToken,
+                    formType: formType
+                }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#F97316', '#1a202c', '#FFFFFF']
+                });
+                formContainer.classList.add('hidden');
+                successCard.classList.remove('hidden');
+            } else {
+                messageEl.textContent = result.message || 'Er is een fout opgetreden. Probeer het opnieuw.';
+                messageEl.classList.add('text-red-600');
+                grecaptcha.reset();
+            }
+        } catch (error) {
+            messageEl.textContent = 'Er is een netwerkfout opgetreden. Controleer je verbinding.';
+            messageEl.classList.add('text-red-600');
+            grecaptcha.reset();
+        }
     };
     
     copyLinkButton.addEventListener('click', () => { navigator.clipboard.writeText(window.location.href).then(() => { copyLinkButton.textContent = 'Gekopieerd!'; setTimeout(() => { copyLinkButton.textContent = 'Kopieer Link'; }, 2000); }); });
