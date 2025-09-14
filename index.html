@@ -454,14 +454,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const container = document.getElementById(`faq-${type}-container`);
         if (!container) return;
 
-        const inner = container.querySelector('.faq-items-wrapper');
+        const inner = container.querySelector('.faq-items-wrapper') || container.querySelector('.flex');
         const prevBtn = container.querySelector(`.faq-prev-${type}`);
         const nextBtn = container.querySelector(`.faq-next-${type}`);
         
+        if (!inner || !prevBtn || !nextBtn) return;
+
         let index = 0;
         const items = inner.querySelectorAll('.w-full');
         const totalItems = items.length;
-        
+        if (totalItems === 0) return;
+
         let autoPlayInterval = null;
         let isAutoPlaying = false;
 
@@ -478,9 +481,9 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         const startAutoPlay = () => {
-            if (isAutoPlaying || window.innerWidth >= 768) return; // Start niet op desktop
+            if (isAutoPlaying || window.innerWidth >= 768) return;
             isAutoPlaying = true;
-            autoPlayInterval = setInterval(goToNext, 20000); // 20 seconden
+            autoPlayInterval = setInterval(goToNext, 20000);
         };
         const stopAutoPlay = () => {
             if (!isAutoPlaying) return;
@@ -513,7 +516,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        startAutoPlay(); // Probeer autoplay te starten bij laden
+        startAutoPlay();
     }
 
     setupFaqCarousel('driver');
@@ -523,61 +526,81 @@ document.addEventListener('DOMContentLoaded', function () {
     const updateModalContent = (type) => {
         const modalTabs = document.querySelectorAll('.modal-tab-button');
         const title = document.getElementById('modal-title');
-        // ... (rest van je updateModalContent functie)
+        const fields = document.getElementById('form-fields');
+        const consentFields = document.getElementById('consent-fields');
+        const submitButton = document.getElementById('modal-submit-button');
+        const disclaimer = document.getElementById('modal-disclaimer');
+        const recaptchaNotice = document.getElementById('recaptcha-notice');
+        let fieldsHTML = `<div><input type="text" name="name" placeholder="Jouw naam" class="w-full p-3 border border-gray-300 rounded-lg" required></div><div><input type="email" name="email" placeholder="Jouw e-mailadres" class="w-full p-3 border border-gray-300 rounded-lg" required></div><div id="extra-field-container"></div><div><input type="tel" name="phone" placeholder="Telefoonnummer" class="w-full p-3 border border-gray-300 rounded-lg" required></div>`;
+        fields.innerHTML = fieldsHTML;
+        const extraFieldContainer = document.getElementById('extra-field-container');
+        let consentHTML = '';
+        if (type === 'driver') {
+            title.textContent = 'Join de Wachtlijst als Bestuurder';
+            extraFieldContainer.innerHTML = '<div><input type="number" name="km" placeholder="Kilometers vorig jaar" class="w-full p-3 border border-gray-300 rounded-lg" required></div>';
+            submitButton.textContent = 'Verzeker mijn plek';
+            disclaimer.textContent = 'Slechts 500 plekken beschikbaar.';
+            consentHTML = `<label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="age_confirm" class="mr-2 mt-1" required><span class="flex-1">Ik ben 18 jaar of ouder.</span></label><label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="owner_confirm" class="mr-2 mt-1" required><span class="flex-1">Ik ben eigenaar van de wagen of heb toestemming van de eigenaar/lease-maatschappij.</span></label><label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="marketing_consent" class="mr-2 mt-1"><span class="flex-1">Ik wil nieuws, updates en aanbiedingen ontvangen via e-mail/sms.</span></label>`;
+        } else {
+            title.textContent = 'Word een Launch Partner';
+            extraFieldContainer.innerHTML = '<div><input type="text" name="company" placeholder="Naam bedrijf" class="w-full p-3 border border-gray-300 rounded-lg" required></div>';
+            submitButton.textContent = 'Ik heb interesse!';
+            disclaimer.textContent = 'Let op: er zijn meer aanmeldingen dan de 5 beschikbare partnerplekken.';
+            consentHTML = `<label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="age_confirm" class="mr-2 mt-1" required><span class="flex-1">Ik ben 18 jaar of ouder.</span></label><label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="marketing_consent" class="mr-2 mt-1"><span class="flex-1">Ik wil nieuws, updates en aanbiedingen ontvangen via e-mail/sms.</span></label>`;
+        }
+        consentFields.innerHTML = consentHTML;
+        recaptchaNotice.innerHTML = `Deze site wordt beschermd door reCAPTCHA en het <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="underline">Privacybeleid</a> en de <a href="https://policies.google.com/terms" target="_blank" rel="noopener" class="underline">Servicevoorwaarden</a> van Google zijn van toepassing.`;
         modalTabs.forEach(tab => {
             tab.classList.toggle('active', tab.getAttribute('data-tab') === type);
         });
     };
     
-    // (De volledige inhoud van updateModalContent en andere modal functies)
-    const handleFormSubmit = async (e) => { /* ... je form submit logica ... */ };
+    const handleFormSubmit = async (e) => { e.preventDefault(); messageEl.textContent = ''; if (!form.checkValidity()) { form.reportValidity(); return; } /* ... rest van submit logica ... */ };
+    
+    copyLinkButton.addEventListener('click', () => { navigator.clipboard.writeText(window.location.href).then(() => { copyLinkButton.textContent = 'Gekopieerd!'; setTimeout(() => { copyLinkButton.textContent = 'Kopieer Link'; }, 2000); }); });
+    
     const openModalButtons = document.querySelectorAll('.open-modal-button');
-    const closeModalButton = document.getElementById('close-modal-button');
-    const headerJoinButtons = document.querySelectorAll('.header-join-button');
-    const modalSwitcherTabs = document.querySelectorAll('.modal-tab-button');
-    
-    // (Hier volgt de volledige, correcte code voor de rest van de interacties)
-    headerJoinButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            form.reset();
-            if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
-            messageEl.textContent = '';
-            formContainer.classList.remove('hidden');
-            successCard.classList.add('hidden');
-            updateModalContent('driver'); 
-            modal.style.display = 'flex';
-        });
-    });
-    
-    modalSwitcherTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            const selectedTab = tab.getAttribute('data-tab');
-            updateModalContent(selectedTab);
-        });
-    });
-
     openModalButtons.forEach(button => {
         button.addEventListener('click', () => {
-            form.reset();
-            if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
+            form.reset(); if (typeof grecaptcha !== 'undefined') grecaptcha.reset(); messageEl.textContent = ''; formContainer.classList.remove('hidden'); successCard.classList.add('hidden');
             const activeTab = document.querySelector('.tab-button.active').getAttribute('data-tab');
             updateModalContent(activeTab);
             modal.style.display = 'flex';
         });
     });
 
+    const closeModalButton = document.getElementById('close-modal-button');
     closeModalButton.addEventListener('click', () => { modal.style.display = 'none'; });
     modal.addEventListener('click', (e) => { if (e.target === modal) { modal.style.display = 'none'; } });
     form.addEventListener('submit', handleFormSubmit);
-    updateModalContent('driver'); // Initialiseer de modal content
+    updateModalContent('driver');
 
-    // --- Cookie Banner Logic ---
+    // Cookie Banner Logic
     const cookieBanner = document.getElementById('cookie-banner');
     const acceptBtn = document.getElementById('cookie-accept');
     const declineBtn = document.getElementById('cookie-decline');
     if (!localStorage.getItem('cookie_consent')) { cookieBanner.classList.add('active'); }
     acceptBtn.addEventListener('click', () => { localStorage.setItem('cookie_consent', 'accepted'); cookieBanner.classList.remove('active'); });
     declineBtn.addEventListener('click', () => { localStorage.setItem('cookie_consent', 'declined'); cookieBanner.classList.remove('active'); });
+    
+    // Header Join Buttons
+    const headerJoinButtons = document.querySelectorAll('.header-join-button');
+    headerJoinButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            form.reset(); if (typeof grecaptcha !== 'undefined') grecaptcha.reset(); messageEl.textContent = ''; formContainer.classList.remove('hidden'); successCard.classList.add('hidden');
+            updateModalContent('driver'); 
+            modal.style.display = 'flex';
+        });
+    });
+    
+    // Modal Switcher
+    const modalTabs = document.querySelectorAll('.modal-tab-button');
+    modalTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const selectedTab = tab.getAttribute('data-tab');
+            updateModalContent(selectedTab);
+        });
+    });
 });
 </script>
 
