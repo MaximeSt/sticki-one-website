@@ -51,7 +51,7 @@
         <!-- Glassmorphism Login Card -->
         <div class="w-full max-w-md bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl rounded-2xl p-8 md:p-10 animate-fade-in">
             <div class="text-center mb-8">
-                 <a href="index.html" class="inline-flex items-center justify-center gap-2 text-3xl text-white shrink-0 mb-2">
+                 <a href="/" class="inline-flex items-center justify-center gap-2 text-3xl text-white shrink-0 mb-2">
                     <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="16" fill="#F97316"/></svg>
                     <span class="font-medium">Sticki</span><span class="font-light">.one</span>
                  </a>
@@ -87,8 +87,7 @@
             <div class="mt-6 text-center border-t border-white/20 pt-4">
                  <p class="text-xs text-gray-300">
                      Nog geen account? Deelnemers van de eerste drop ontvangen op 1 januari een uitnodiging. 
-                     <a href="index.html#join" class="font-medium text-orange-400 hover:underline">Schrijf je hier in</a> en maak kans op een plek.
-                 </p>
+<a href="/#join-section" class="font-medium text-orange-400 hover:underline">Schrijf je hier in</a> en maak kans op een plek.                 </p>
             </div>
         </div>
     </main>
@@ -134,11 +133,11 @@
             const email = document.getElementById('email').value.toLowerCase();
             const password = document.getElementById('password').value;
 
-            if (email === 'driver@sticki.one' && password === 'password') {
-                window.location.href = './dashboard-driver.html';
-            } else if (email === 'advertiser@sticki.one' && password === 'password') {
-                 window.location.href = './dashboard-advertiser.html';
-            }
+          if (email === 'driver@sticki.one' && password === 'password') {
+    window.location.href = '/dashboard-driver';
+} else if (email === 'advertiser@sticki.one' && password === 'password') {
+     window.location.href = '/dashboard-advertiser';
+}
             // else if (email === 'admin@sticki.one' && password === 'password') {
             //     window.location.href = './dashboard-admin.html';
             // } 
