@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="nl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sticki.one - Your Car. Your Canvas. Your Cash.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- reCAPTCHA Script v2 -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #F8F9FA; }
+        .gradient-bg { background: linear-gradient(135deg, #fce1d1 0%, #f7d8f5 100%); }
+        .tab-button.active { background-color: #1a202c; color: white; }
+        .tab-button { transition: all 0.3s ease; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .form-modal { display: none; }
+        .form-modal.active { display: flex; }
+        #cookie-banner { display: none; }
+        #cookie-banner.active { display: flex; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+        @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes slideInUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .animate-fadeIn { animation: fadeIn 0.3s ease-out forwards; }
+        .animate-fadeOut { animation: fadeOut 0.3s ease-out forwards; }
+        .animate-slideIn { animation: slideIn 0.5s ease-out forwards; }
+        .animate-slideInUp { animation: slideInUp 0.5s ease-out forwards; }
+
+        /* Animated Gradient Border for Advantages Card */
+        @property --rotate {
+            syntax: "<angle>";
+            initial-value: 132deg;
+            inherits: false;
+        }
+
+        @keyframes spin {
+            0% { --rotate: 0deg; }
+            100% { --rotate: 360deg; }
+        }
+
+        .gradient-border-card {
+            background: transparent;
+            padding: 4px; /* Controls border thickness */
+            position: relative;
+            z-index: 1;
+            display: inline-block; /* Changed for centering */
+            border-radius: 1.25rem; /* Outer radius */
+        }
+
+        .gradient-border-card::before {
+            content: "";
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            background-image: linear-gradient(
+                var(--rotate),
+                #fce1d1, #f7d8f5 50%, #fce1d1
+            );
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            animation: spin 8s linear infinite;
+        }
+        
+        .gradient-border-card::after {
+            position: absolute;
+            content: "";
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -2;
+            height: 110%;
+            width: 110%;
+            filter: blur(20px);
+            background-image: linear-gradient(
+                var(--rotate),
+                #fce1d1, #f7d8f5 50%, #fce1d1
+            );
+            opacity: 0.6;
+            animation: spin 8s linear infinite;
+        }
+
+        .card-content {
+            background: white;
+            border-radius: 1rem; /* Inner radius */
+            width: 100%;
+        }
+        
+        /* Preloader Animation */
+        #preloader {
+            transition: opacity 0.8s ease-in-out;
+        }
+        #preloader-logo {
+            transition: all 1s ease-in-out;
+        }
+        .preloader-active #preloader-logo {
+            transform: translate(-50vw, -50vh) scale(0.6) translateY(40px) translateX(110px);
+        }
+        .page-content {
+             opacity: 0;
+             transition: opacity 1s ease-in-out;
+        }
+        .page-loaded .page-content {
+            opacity: 1;
+        }
+        
+        .faq-container {
+            transition: height 0.5s ease-in-out;
+        }
+
+        .faq-card-shadow {
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Preloader -->
+    <div id="preloader" class="fixed inset-0 bg-white z-[9999] flex items-center justify-center">
+        <div id="preloader-logo">
+            <div class="flex items-center gap-2 text-4xl font-bold">
+                <svg width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="16" fill="#F97316"/></svg>
+                <span class="font-medium text-gray-900">Sticki</span><span class="font-light text-gray-700">.one</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <!-- Header -->
+        <header class="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-lg z-50 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="flex items-center gap-2 text-2xl font-bold opacity-0" id="header-logo"> <!-- Initially hidden for animation -->
+                            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="16" fill="#F97316"/></svg>
+                            <span class="font-medium text-gray-900">Sticki</span><span class="font-light text-gray-700">.one</span>
+                        </a>
+                    </div>
+                    <div class="hidden md:flex items-center space-x-8">
+                        <a href="drivers.html" class="text-gray-600 hover:text-orange-600 transition">Voor Bestuurders</a>
+                        <a href="advertisers.html" class="text-gray-600 hover:text-orange-600 transition">Voor Adverteerders</a>
+                    </div>
+                    <div class="hidden md:block">
+                         <a href="#join-section" class="bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-900 transition shadow-md">Join de Wachtlijst</a>
+                    </div>
+                    <div class="md:hidden">
+                        <button id="mobile-menu-button" class="text-gray-800 hover:text-orange-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-menu" class="md:hidden hidden bg-white p-4">
+                <a href="drivers.html" class="block text-gray-600 hover:text-orange-600 transition py-2">Voor Bestuurders</a>
+                <a href="advertisers.html" class="block text-gray-600 hover:text-orange-600 transition py-2">Voor Adverteerders</a>
+                <a href="#join-section" class="mt-2 block w-full text-center bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-900 transition">Join de Wachtlijst</a>
+            </div>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <section class="pt-28 pb-16 gradient-bg">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h1 class="text-4xl md:text-6xl font-black text-gray-900 leading-tight">Your Car. Your Canvas. Your Cash.</h1>
+                    <p class="mt-6 max-w-3xl mx-auto text-lg text-gray-700">Transformeer je wagen in een rijdend canvas en verdien of schenk geld door merken te vertegenwoordigen waar je in gelooft. Simpel, transparant en zonder gedoe.</p>
+                    <div class="mt-10 max-w-4xl mx-auto rounded-2xl shadow-2xl overflow-hidden">
+                         <div id="hero-carousel" class="relative">
+                            <div class="carousel-inner flex transition-transform duration-500 ease-in-out">
+                                <img src="carousel-1.jpg" onerror="this.onerror=null;this.src='https://placehold.co/1200x600/f97316/FFFFFF?text=Jouw+Visual+Hier';" class="w-full flex-shrink-0" alt="Auto met sticker 1">
+                                <img src="carousel-2.jpg" onerror="this.onerror=null;this.src='https://placehold.co/1200x600/1a202c/FFFFFF?text=Sticki.one';" class="w-full flex-shrink-0" alt="Auto met sticker 2">
+                                <img src="carousel-3.jpg" onerror="this.onerror=null;this.src='https://placehold.co/1200x600/f7d8f5/1a202c?text=Jouw+Merk+Overal';" class="w-full flex-shrink-0" alt="Auto met sticker 3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FOMO Section -->
+            <section class="py-20 bg-white">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h2 class="text-4xl font-bold text-gray-900">De lancering komt eraan.</h2>
+                    <p class="mt-4 text-gray-600 max-w-2xl mx-auto">De interesse in Sticki.one is overweldigend. Om de beste ervaring te garanderen, werken we met exclusieve 'drops'. De allereerste drop is voor een selecte groep pioniers.</p>
+                     <div class="mt-10 flex flex-col md:flex-row justify-center items-center gap-8">
+                        <div class="border border-orange-200 bg-orange-50 rounded-2xl p-8 text-center w-64">
+                            <p class="text-5xl font-bold text-orange-600">500</p>
+                            <p class="font-semibold text-orange-800">Founding Drivers</p>
+                        </div>
+                        <div class="border border-gray-200 bg-gray-50 rounded-2xl p-8 text-center w-64">
+                            <p class="text-5xl font-bold text-gray-600">5</p>
+                            <p class="font-semibold text-gray-800">Launch Partners</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive Join Section -->
+            <section id="join-section" class="py-20 bg-gray-50 overflow-hidden">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl md:text-4xl font-black">Hoe neem je deel?</h2>
+                        <p class="mt-4 max-w-2xl mx-auto text-gray-600">Kies je rol en ontdek de stappen, voordelen en schrijf je in voor de exclusieve eerste drop.</p>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="flex justify-center mb-12">
+                        <div class="bg-gray-200 p-1 rounded-xl flex items-center space-x-1">
+                            <button class="tab-button py-3 px-8 rounded-lg font-semibold active" data-tab="driver">Ik ben Bestuurder</button>
+                            <button class="tab-button py-3 px-8 rounded-lg font-semibold" data-tab="advertiser">Ik ben Adverteerder</button>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div id="tab-content-container" class="relative">
+                        
+                        <!-- Driver Content -->
+                        <div id="driver" class="tab-content active animate-fadeIn">
+                            <!-- Step-by-step -->
+                            <div class="text-center mb-16">
+                                <h3 class="text-2xl font-bold mb-8">Wat gebeurt er na je inschrijving?</h3>
+                                <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                                    <div class="bg-white p-6 rounded-2xl shadow-lg text-left">
+                                        <img src="driver-step-1.jpg" onerror="this.onerror=null;this.src='https://placehold.co/400x250/fef3c7/a16207?text=Stap+1';" alt="Sticker installatie" class="rounded-lg mb-4 w-full h-40 object-cover">
+                                        <h4 class="font-bold mb-2">Sticker Installatie</h4>
+                                        <p class="text-sm text-gray-600">Ons team contacteert je om de sticker te installeren. Dit duurt slechts 15 minuten.</p>
+                                    </div>
+                                    <div class="bg-white p-6 rounded-2xl shadow-lg text-left">
+                                        <img src="driver-step-2.jpg" onerror="this.onerror=null;this.src='https://placehold.co/400x250/fef3c7/a16207?text=Stap+2';" alt="Maandelijkse foto" class="rounded-lg mb-4 w-full h-40 object-cover">
+                                        <h4 class="font-bold mb-2">Maandelijkse Foto</h4>
+                                        <p class="text-sm text-gray-600">Elke maand neem je een foto van de sticker en je kilometerstand als bewijs.</p>
+                                    </div>
+                                    <div class="bg-white p-6 rounded-2xl shadow-lg text-left">
+                                        <img src="driver-step-3.jpg" onerror="this.onerror=null;this.src='https://placehold.co/400x250/fef3c7/a16207?text=Stap+3';" alt="Directe betaling" class="rounded-lg mb-4 w-full h-40 object-cover">
+                                        <h4 class="font-bold mb-2">Direct Betaald</h4>
+                                        <p class="text-sm text-gray-600">Na goedkeuring (binnen 24u) ontvang je onmiddellijk je vergoeding.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FAQ Carousel -->
+                            <div class="max-w-3xl mx-auto mb-16">
+                                <h3 class="text-2xl font-bold text-center mb-8">Veelgestelde Vragen</h3>
+                                <div id="faq-driver-container" class="relative faq-container">
+                                    <button class="faq-prev-driver absolute top-1/2 -translate-y-1/2 left-0 md:-left-16 bg-white p-3 rounded-full shadow-md text-gray-700 hover:bg-gray-100 z-10 transition">&lt;</button>
+                                    <div id="faq-carousel-driver" class="overflow-hidden">
+                                        <div class="flex transition-transform duration-300 ease-in-out">
+                                            <div class="w-full flex-shrink-0 px-2"><div class="bg-white p-8 rounded-2xl faq-card-shadow"><h4 class="text-lg font-bold">Hoeveel kan ik verdienen?</h4><p class="text-gray-600 mt-2">Als Founding Driver verdien je €350 per jaar, maandelijks uitbetaald, voor campagnes van 12 maanden.</p></div></div>
+                                            <div class="w-full flex-shrink-0 px-2"><div class="bg-white p-8 rounded-2xl faq-card-shadow"><h4 class="text-lg font-bold">Beschadigt de sticker mijn auto?</h4><p class="text-gray-600 mt-2">Nee, we gebruiken hoogwaardige, verwijderbare vinyl die speciaal is ontworpen voor auto's en geen schade achterlaat.</p></div></div>
+                                            <div class="w-full flex-shrink-0 px-2"><div class="bg-white p-8 rounded-2xl faq-card-shadow"><h4 class="text-lg font-bold">Wat als ik minder dan 750 km per maand rijd?</h4><p class="text-gray-600 mt-2">Geen probleem! Neem contact met ons op. We hebben flexibele oplossingen en kijken graag samen wat mogelijk is.</p></div></div>
+                                        </div>
+                                    </div>
+                                    <button class="faq-next-driver absolute top-1/2 -translate-y-1/2 right-0 md:-right-16 bg-white p-3 rounded-full shadow-md text-gray-700 hover:bg-gray-100 z-10 transition">&gt;</button>
+                                </div>
+                            </div>
+
+
+                            <!-- Why Now & Join Button -->
+                            <div class="text-center mb-16">
+                                <div class="gradient-border-card mb-8">
+                                    <div class="card-content p-8">
+                                        <h3 class="text-xl font-bold mb-4">Voordelen als Founding Driver:</h3>
+                                        <ul class="text-left space-y-3">
+                                            <li class="flex items-start"><svg class="w-5 h-5 text-orange-500 mr-2 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span><span class="font-semibold">Plek in de eerste drop:</span> Wees bij de allereersten die verdienen.</span></li>
+                                            <li class="flex items-start"><svg class="w-5 h-5 text-orange-500 mr-2 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span><span class="font-semibold">Permanente bonus:</span> Verdien een hogere vergoeding, voor altijd.</span></li>
+                                            <li class="flex items-start"><svg class="w-5 h-5 text-orange-500 mr-2 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span><span class="font-semibold">Eerste keuze:</span> Krijg als eerste toegang tot de populairste campagnes.</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <button class="open-modal-button bg-gray-800 text-white text-lg font-bold px-12 py-4 rounded-xl hover:bg-gray-900 transition shadow-lg">Join de Wachtlijst</button>
+                                    <p class="text-xs text-gray-500 mt-2">Slechts 500 plekken beschikbaar voor de eerste drop.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Advertiser Content -->
+                        <div id="advertiser" class="tab-content">
+                            <!-- Step-by-step -->
+                            <div class="text-center mb-16">
+                                <h3 class="text-2xl font-bold mb-8">Wat gebeurt er na je aanvraag?</h3>
+                                <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                                    <div class="bg-white p-6 rounded-2xl shadow-lg text-left">
+                                         <img src="advertiser-step-1.jpg" onerror="this.onerror=null;this.src='https://placehold.co/400x250/dbeafe/1e3a8a?text=Stap+1';" alt="Gesprek met team" class="rounded-lg mb-4 w-full h-40 object-cover">
+                                         <h4 class="font-bold mb-2">Persoonlijk Gesprek</h4>
+                                         <p class="text-sm text-gray-600">Ons team contacteert je om de business case en de fit te bespreken.</p>
+                                    </div>
+                                    <div class="bg-white p-6 rounded-2xl shadow-lg text-left">
+                                         <img src="advertiser-step-2.jpg" onerror="this.onerror=null;this.src='https://placehold.co/400x250/dbeafe/1e3a8a?text=Stap+2';" alt="Selectie en ontwerp" class="rounded-lg mb-4 w-full h-40 object-cover">
+                                         <h4 class="font-bold mb-2">Selectie & Ontwerp</h4>
+                                         <p class="text-sm text-gray-600">Na selectie finaliseren we de visuals, het aantal wagens en de campagnedetails.</p>
+                                    </div>
+                                    <div class="bg-white p-6 rounded-2xl shadow-lg text-left">
+                                         <img src="advertiser-step-3.jpg" onerror="this.onerror=null;this.src='https://placehold.co/400x250/dbeafe/1e3a8a?text=Stap+3';" alt="Lancering campagne" class="rounded-lg mb-4 w-full h-40 object-cover">
+                                         <h4 class="font-bold mb-2">Lancering & Impact</h4>
+                                         <p class="text-sm text-gray-600">Je campagne wordt gelanceerd voor maximale impact in jouw doelregio (100-300 wagens).</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                             <!-- FAQ Carousel -->
+                            <div class="max-w-3xl mx-auto mb-16">
+                                <h3 class="text-2xl font-bold text-center mb-8">Veelgestelde Vragen</h3>
+                                <div id="faq-advertiser-container" class="relative faq-container">
+                                   <button class="faq-prev-advertiser absolute top-1/2 -translate-y-1/2 left-0 md:-left-16 bg-white p-3 rounded-full shadow-md text-gray-700 hover:bg-gray-100 z-10 transition">&lt;</button>
+                                    <div id="faq-carousel-advertiser" class="overflow-hidden">
+                                        <div class="flex transition-transform duration-300 ease-in-out">
+                                            <!-- FAQ items here -->
+                                             <div class="w-full flex-shrink-0 px-2"><div class="bg-white p-8 rounded-2xl faq-card-shadow"><h4 class="font-bold text-lg">Wat zijn de kosten?</h4><p class="text-gray-600 mt-2">Voor de launch werken we zonder marge. Ons doel: voor de prijs van één busadvertentie krijg je bij ons 50 wagenadvertenties, en voor de prijs van één billboard 40 wagenadvertenties.<br><br>In alle transparantie focussen we erop om drivers netto €30–50 per maand te laten verdienen, terwijl Sticki.one de belasting, marketing en kost van de stickers volledig op zich neemt.<br><br>✨ Als launch partner hou je voor altijd onze no-margin bodemprijs, plus extra voordelen. ❤️<br>Neem contact op en maak kans om één van de 5 geselecteerde launch partners te worden.</p></div></div>
+                                            <div class="w-full flex-shrink-0 px-2"><div class="bg-white p-8 rounded-2xl faq-card-shadow"><h4 class="font-bold text-lg">Wat is de impact?</h4><p class="text-gray-600 mt-2">Met 200 wagens transformeer je het straatbeeld in jouw doelregio. Je logo is overal, wat zorgt voor een enorme merkbekendheid. Bovendien worden de bestuurders ambassadeurs die over je merk praten.</p></div></div>
+                                            <div class="w-full flex-shrink-0 px-2"><div class="bg-white p-8 rounded-2xl faq-card-shadow"><h4 class="font-bold text-lg">Hoe wordt de kwaliteit gegarandeerd?</h4><p class="text-gray-600 mt-2">Elke maand wordt het aantal gereden kilometers, aanwezigheid en staat van de sticker geverifieerd via foto's. Bestuurders worden pas betaald na goedkeuring, wat kwaliteit verzekert. Adverteerders krijgen elk maand een overzicht van de impact van hun campagne in OTS (opportunities to see) en het meer betrouwbare VAC (Visibility Adjusted Contacts).</p></div></div>
+                                            <div class="w-full flex-shrink-0 px-2"><div class="bg-white p-8 rounded-2xl faq-card-shadow"><h4 class="font-bold text-lg">Wat is VAC (Visibility Adjusted Contacts)?</h4><p class="text-gray-600 mt-2">VAC is dé standaard om OOH-campagnes te meten. Het houdt rekening met de grootte, snelheid en zichtbaarheid van de reclame om een betrouwbaar cijfer te geven dat de werkelijke impact weergeeft, in tegenstelling tot ruwe impressies (OTS).</p></div></div>
+                                        </div>
+                                    </div>
+                                    <button class="faq-next-advertiser absolute top-1/2 -translate-y-1/2 right-0 md:-right-16 bg-white p-3 rounded-full shadow-md text-gray-700 hover:bg-gray-100 z-10 transition">&gt;</button>
+                                </div>
+                            </div>
+
+                            <!-- Why Now & Join Button -->
+                            <div class="text-center mb-16">
+                                <div class="gradient-border-card mb-8">
+                                    <div class="card-content p-8">
+                                        <h3 class="text-xl font-bold mb-4">Voordelen als Launch Partner:</h3>
+                                        <ul class="text-left space-y-3">
+                                            <li class="flex items-start"><svg class="w-5 h-5 text-orange-500 mr-2 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span><span class="font-semibold">Korting voor het Leven:</span> Een permanente korting op al je toekomstige campagnes.</span></li>
+                                            <li class="flex items-start"><svg class="w-5 h-5 text-orange-500 mr-2 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span><span class="font-semibold">Gratis Media-aandacht:</span> Profiteer mee van onze lancerings-PR.</span></li>
+                                            <li class="flex items-start"><svg class="w-5 h-5 text-orange-500 mr-2 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span><span class="font-semibold">Vorm de Toekomst:</span> Krijg directe inspraak in nieuwe platform features.</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <button class="open-modal-button bg-gray-800 text-white text-lg font-bold px-12 py-4 rounded-xl hover:bg-gray-900 transition shadow-lg">Ik heb interesse!</button>
+                                    <p class="text-xs text-gray-500 mt-2">Let op: er zijn meer aanmeldingen dan de 5 beschikbare partnerplekken.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
+             <div class="flex justify-center space-x-6">
+                <a href="login.html" class="hover:underline">Login</a>
+                <a href="/privacy" class="hover:underline">Privacy</a>
+                <a href="/cookies" class="hover:underline">Cookies</a>
+                <a href="/terms" class="hover:underline">Voorwaarden</a>
+                <a href="/contact-privacy" class="hover:underline">Privacy-verzoeken</a>
+             </div>
+            <p class="text-gray-500 text-xs mt-6">© 2025 Sticki.one • Alle rechten voorbehouden.</p>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div id="join-modal" class="form-modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4 z-[100]">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full relative animate-slideIn">
+            <button id="close-modal-button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 text-2xl">&times;</button>
+            <form id="waitlist-form">
+                <h3 id="modal-title" class="text-2xl font-bold text-center mb-6"></h3>
+                <div id="form-fields" class="space-y-4">
+                    <!-- Dynamic fields will be inserted here -->
+                </div>
+                
+                <div id="consent-fields" class="space-y-3 mt-6">
+                    <!-- Dynamic consent checkboxes will be here -->
+                </div>
+                
+                <!-- reCAPTCHA v2 Widget -->
+                <div class="g-recaptcha my-4 flex justify-center" data-sitekey="6Lf-FskrAAAAAB1UZzt92dUck8MgbDdWn5gcSkjh"></div> <!-- VERVANG YOUR_SITE_KEY -->
+                
+                <button id="modal-submit-button" type="submit" class="w-full mt-2 bg-gray-800 text-white font-bold py-3 rounded-lg hover:bg-gray-900 transition"></button>
+                <p id="modal-disclaimer" class="text-xs text-gray-500 mt-2 text-center"></p>
+
+                <p class="text-xs text-gray-500 mt-4 text-center">
+                    Door te verzenden ga je akkoord met de verwerking van je gegevens voor contact rond de wachtlijst/lancering.
+                    Meer info in onze <a href="/privacy" class="underline">Privacyverklaring</a>.
+                </p>
+                 <p id="recaptcha-notice" class="text-xs text-gray-400 mt-2 text-center"></p>
+
+
+                <p id="modal-message" class="mt-4 text-center font-medium h-5"></p>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Cookie Banner -->
+    <div id="cookie-banner" class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-6 shadow-2xl z-[101] animate-slideInUp">
+        <div class="max-w-7xl mx-auto md:flex items-center justify-between">
+            <p class="text-sm md:max-w-xl mb-4 md:mb-0">
+                Wij gebruiken cookies om je ervaring te verbeteren. Door verder te surfen ga je akkoord met ons gebruik van cookies. Lees meer in ons <a href="/cookies" class="font-bold underline hover:text-orange-400">Cookiebeleid</a>.
+            </p>
+            <div class="flex items-center space-x-4">
+                <button id="cookie-accept" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-lg transition">Accepteer alles</button>
+                <button id="cookie-decline" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition">Weiger</button>
+                <a href="/cookies" class="text-xs underline hover:text-orange-400">Instellingen</a>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+             // Preloader Animation Logic
+            const body = document.body;
+            const preloader = document.getElementById('preloader');
+            const headerLogo = document.getElementById('header-logo');
+
+            body.classList.add('preloader-active');
+
+            // Start the animation after a short delay to ensure rendering
+            setTimeout(() => {
+                // After 1.2s, start fading out the preloader and fading in the content
+                setTimeout(() => {
+                    preloader.style.opacity = '0';
+                    body.classList.add('page-loaded');
+                    headerLogo.style.opacity = '1';
+
+                    // Set initial height of carousels AFTER page is loaded and visible
+                    driverCarousel.updateHeight();
+                    advertiserCarousel.updateHeight();
+                    
+                }, 1200);
+
+                // After the fade out animation is complete, remove the preloader
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 2200); // 1200ms delay + 1000ms transition
+            }, 100);
+
+
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Hero Carousel
+            const carouselInner = document.querySelector('#hero-carousel .carousel-inner');
+            let currentIndex = 0;
+            const totalSlides = carouselInner.children.length;
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % totalSlides;
+                carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+            }, 4000);
+
+            // Tab functionality
+            const tabs = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    const target = tab.getAttribute('data-tab');
+                    
+                    tabContents.forEach(content => {
+                         if (content.id === target) {
+                            content.classList.add('active');
+                            content.classList.remove('animate-fadeOut');
+                            content.classList.add('animate-fadeIn');
+                        } else {
+                            if (content.classList.contains('active')) {
+                                content.classList.remove('animate-fadeIn');
+                                content.classList.add('animate-fadeOut');
+                                setTimeout(() => content.classList.remove('active'), 300);
+                            }
+                        }
+                    });
+                    
+                    // Recalculate height on tab switch to prevent overlap
+                    if (target === 'driver') {
+                        driverCarousel.updateHeight();
+                    } else if (target === 'advertiser') {
+                        advertiserCarousel.updateHeight();
+                    }
+                });
+            });
+
+            // FAQ Carousel
+            function setupCarousel(type) {
+                const container = document.getElementById(`faq-${type}-container`);
+                if (!container) return;
+                const inner = container.querySelector(`#faq-carousel-${type} .flex`);
+                const prevBtn = container.querySelector(`.faq-prev-${type}`);
+                const nextBtn = container.querySelector(`.faq-next-${type}`);
+                let index = 0;
+                const totalItems = inner.children.length;
+
+                function updateHeight() {
+                    if(!inner.children[index]) return;
+                    const activeSlide = inner.children[index].firstElementChild;
+                    container.style.height = activeSlide.offsetHeight + 'px';
+                }
+                
+                function reorderSlides() {
+                    if (type === 'advertiser') {
+                         const costSlide = Array.from(inner.children).find(slide => slide.querySelector('h4').textContent.includes('kosten'));
+                         if (costSlide && inner.firstChild !== costSlide) {
+                            inner.insertBefore(costSlide, inner.firstChild);
+                        }
+                    }
+                }
+
+                nextBtn.addEventListener('click', () => {
+                    index = (index + 1) % totalItems;
+                    inner.style.transform = `translateX(-${index * 100}%)`;
+                    updateHeight();
+                });
+                 prevBtn.addEventListener('click', () => {
+                    index = (index - 1 + totalItems) % totalItems;
+                    inner.style.transform = `translateX(-${index * 100}%)`;
+                    updateHeight();
+                });
+                
+                reorderSlides();
+                
+                window.addEventListener('resize', updateHeight);
+
+                return { updateHeight };
+            }
+            const driverCarousel = setupCarousel('driver');
+            const advertiserCarousel = setupCarousel('advertiser');
+
+
+            // Modal functionality
+            const modal = document.getElementById('join-modal');
+            const openModalButtons = document.querySelectorAll('.open-modal-button');
+            const closeModalButton = document.getElementById('close-modal-button');
+            const form = document.getElementById('waitlist-form');
+            const messageEl = document.getElementById('modal-message');
+
+            const updateModalContent = (type) => {
+                const title = document.getElementById('modal-title');
+                const fields = document.getElementById('form-fields');
+                const consentFields = document.getElementById('consent-fields');
+                const submitButton = document.getElementById('modal-submit-button');
+                const disclaimer = document.getElementById('modal-disclaimer');
+                const recaptchaNotice = document.getElementById('recaptcha-notice');
+
+                let fieldsHTML = `
+                    <div><input type="text" name="name" placeholder="Jouw naam" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                    <div id="extra-field-container"></div>
+                    <div><input type="tel" name="phone" placeholder="Telefoonnummer" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                `;
+                fields.innerHTML = fieldsHTML;
+                const extraFieldContainer = document.getElementById('extra-field-container');
+                let consentHTML = '';
+
+                if (type === 'driver') {
+                    title.textContent = 'Join de Wachtlijst als Bestuurder';
+                    extraFieldContainer.innerHTML = '<div><input type="number" name="km" placeholder="Kilometers vorig jaar" class="w-full p-3 border border-gray-300 rounded-lg" required></div>';
+                    submitButton.textContent = 'Verzeker mijn plek';
+                    disclaimer.textContent = 'Slechts 500 plekken beschikbaar.';
+                    consentHTML = `
+                        <label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="age_confirm" class="mr-2 mt-1" required><span class="flex-1">Ik ben 18 jaar of ouder.</span></label>
+                        <label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="owner_confirm" class="mr-2 mt-1" required><span class="flex-1">Ik ben eigenaar van de wagen of heb toestemming van de eigenaar/lease-maatschappij.</span></label>
+                        <label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="marketing_consent" class="mr-2 mt-1"><span class="flex-1">Ik wil nieuws, updates en aanbiedingen ontvangen via e-mail/sms.</span></label>
+                    `;
+                } else { // advertiser
+                    title.textContent = 'Word een Launch Partner';
+                    extraFieldContainer.innerHTML = '<div><input type="text" name="company" placeholder="Naam bedrijf" class="w-full p-3 border border-gray-300 rounded-lg" required></div>';
+                    submitButton.textContent = 'Ik heb interesse!';
+                    disclaimer.textContent = 'Let op: er zijn meer aanmeldingen dan de 5 beschikbare partnerplekken.';
+                    consentHTML = `
+                        <label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="age_confirm" class="mr-2 mt-1" required><span class="flex-1">Ik ben 18 jaar of ouder.</span></label>
+                        <label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="marketing_consent" class="mr-2 mt-1"><span class="flex-1">Ik wil nieuws, updates en aanbiedingen ontvangen via e-mail/sms.</span></label>
+                    `;
+                }
+                consentFields.innerHTML = consentHTML;
+                recaptchaNotice.innerHTML = `Deze site wordt beschermd door reCAPTCHA en het <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="underline">Privacybeleid</a> en de <a href="https://policies.google.com/terms" target="_blank" rel="noopener" class="underline">Servicevoorwaarden</a> van Google zijn van toepassing.`;
+
+            };
+            
+            const handleFormSubmit = (e) => {
+                e.preventDefault();
+                messageEl.textContent = '';
+                messageEl.classList.remove('text-green-600', 'text-red-600');
+                
+                const recaptchaResponse = grecaptcha.getResponse();
+                if (recaptchaResponse.length === 0) {
+                    messageEl.textContent = 'Vink a.u.b. het "Ik ben geen robot" vakje aan.';
+                    messageEl.classList.add('text-red-600');
+                    return; 
+                }
+                
+                // Simulate form submission
+                setTimeout(() => {
+                    messageEl.textContent = 'Check je inbox/sms om je inschrijving te bevestigen.';
+                    messageEl.classList.add('text-green-600');
+                    
+                    confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: { y: 0.6 },
+                        colors: ['#F97316', '#1a202c', '#FFFFFF']
+                    });
+
+                    form.reset();
+                    grecaptcha.reset();
+                }, 500);
+            };
+
+            openModalButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const activeTab = document.querySelector('.tab-button.active').getAttribute('data-tab');
+                    updateModalContent(activeTab);
+                    modal.style.display = 'flex';
+                });
+            });
+
+            closeModalButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+                messageEl.textContent = '';
+                if(typeof grecaptcha !== 'undefined') grecaptcha.reset();
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    messageEl.textContent = '';
+                    if(typeof grecaptcha !== 'undefined') grecaptcha.reset();
+                }
+            });
+
+            form.addEventListener('submit', handleFormSubmit);
+
+            // Initialize modal for the default active tab
+            const initialTab = document.querySelector('.tab-button.active').getAttribute('data-tab');
+            updateModalContent(initialTab);
+
+            // --- Cookie Banner Logic ---
+            const cookieBanner = document.getElementById('cookie-banner');
+            const acceptBtn = document.getElementById('cookie-accept');
+            const declineBtn = document.getElementById('cookie-decline');
+
+            // Check for cookie consent on page load
+            if (!localStorage.getItem('cookie_consent')) {
+                cookieBanner.classList.add('active');
+            }
+
+            acceptBtn.addEventListener('click', () => {
+                localStorage.setItem('cookie_consent', 'accepted');
+                cookieBanner.classList.remove('active');
+            });
+
+            declineBtn.addEventListener('click', () => {
+                localStorage.setItem('cookie_consent', 'declined');
+                cookieBanner.classList.remove('active');
+            });
+        });
+    </script>
+
+</body>
+</html>
+
