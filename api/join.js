@@ -34,8 +34,8 @@ export default async function handler(req, res) {
       .join('');
 
     await resend.emails.send({
-      from: 'Sticki.one Waitlist <waitlist@yourverifieddomain.com>', // Use a verified domain email
-      to: 'your-email@yourdomain.com', // Where you want to receive notifications
+      from: 'Sticki.one Waitlist <waitlist@firstdrop.sticki.one>',
+      to: 'maxime@sticki.one',
       subject: subject,
       html: `<h1>${subject}</h1>${emailBody}`,
     });
