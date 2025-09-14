@@ -342,26 +342,41 @@
     <div id="join-modal" class="form-modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4 z-[100]">
         <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full relative animate-slideIn">
             <button id="close-modal-button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 text-2xl">&times;</button>
-            <form id="waitlist-form">
-                <h3 id="modal-title" class="text-2xl font-bold text-center mb-6"></h3>
-                <div id="form-fields" class="space-y-4">
-                    </div>
-                
-                <div id="consent-fields" class="space-y-3 mt-6">
-                    </div>
-                
-                <div class="g-recaptcha my-4 flex justify-center" data-sitekey="6Lf-FskrAAAAAB1UZzt92dUck8MgbDdWn5gcSkjh"></div> <button id="modal-submit-button" type="submit" class="w-full mt-2 bg-gray-800 text-white font-bold py-3 rounded-lg hover:bg-gray-900 transition"></button>
-                <p id="modal-disclaimer" class="text-xs text-gray-500 mt-2 text-center"></p>
+            
+            <div id="form-container">
+                <form id="waitlist-form" novalidate>
+                    <h3 id="modal-title" class="text-2xl font-bold text-center mb-6"></h3>
+                    <div id="form-fields" class="space-y-4">
+                        </div>
+                    
+                    <div id="consent-fields" class="space-y-3 mt-6">
+                        </div>
+                    
+                    <div class="g-recaptcha my-4 flex justify-center" data-sitekey="YOUR_SITE_KEY"></div> <button id="modal-submit-button" type="submit" class="w-full mt-2 bg-gray-800 text-white font-bold py-3 rounded-lg hover:bg-gray-900 transition"></button>
+                    <p id="modal-disclaimer" class="text-xs text-gray-500 mt-2 text-center"></p>
 
-                <p class="text-xs text-gray-500 mt-4 text-center">
-                    Door te verzenden ga je akkoord met de verwerking van je gegevens voor contact rond de wachtlijst/lancering.
-                    Meer info in onze <a href="/privacy" class="underline">Privacyverklaring</a>.
-                </p>
-                 <p id="recaptcha-notice" class="text-xs text-gray-400 mt-2 text-center"></p>
+                    <p class="text-xs text-gray-500 mt-4 text-center">
+                        Door te verzenden ga je akkoord met de verwerking van je gegevens voor contact rond de wachtlijst/lancering.
+                        Meer info in onze <a href="/privacy" class="underline">Privacyverklaring</a>.
+                    </p>
+                     <p id="recaptcha-notice" class="text-xs text-gray-400 mt-2 text-center"></p>
 
+                    <p id="modal-message" class="mt-4 text-center font-medium h-5"></p>
+                </form>
+            </div>
 
-                <p id="modal-message" class="mt-4 text-center font-medium h-5"></p>
-            </form>
+            <div id="success-card" class="hidden text-center animate-fadeIn">
+                <div class="mb-6">
+                    <svg class="w-16 h-16 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Welkom aan boord!</h3>
+                <p class="text-gray-600 mb-8">Je plek op de wachtlijst is verzekerd. We nemen snel contact met je op met de volgende stappen. Hou je mailbox in de gaten!</p>
+                <div class="bg-gray-100 p-4 rounded-lg flex items-center justify-between">
+                    <span class="text-sm text-gray-700 truncate mr-4">Deel het met vrienden!</span>
+                    <button id="copy-link-button" class="bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg text-sm hover:bg-gray-900 transition whitespace-nowrap">Kopieer Link</button>
+                </div>
+            </div>
+
         </div>
     </div>
     
@@ -397,8 +412,8 @@
                     headerLogo.style.opacity = '1';
 
                     // Set initial height of carousels AFTER page is loaded and visible
-                    if (typeof driverCarousel !== 'undefined') driverCarousel.updateHeight();
-                    if (typeof advertiserCarousel !== 'undefined') advertiserCarousel.updateHeight();
+                    if (typeof driverCarousel !== 'undefined' && driverCarousel) driverCarousel.updateHeight();
+                    if (typeof advertiserCarousel !== 'undefined' && advertiserCarousel) advertiserCarousel.updateHeight();
                     
                 }, 1200);
 
@@ -451,9 +466,9 @@
                     });
                     
                     // Recalculate height on tab switch to prevent overlap
-                    if (target === 'driver' && typeof driverCarousel !== 'undefined') {
+                    if (target === 'driver' && typeof driverCarousel !== 'undefined' && driverCarousel) {
                         driverCarousel.updateHeight();
-                    } else if (target === 'advertiser' && typeof advertiserCarousel !== 'undefined') {
+                    } else if (target === 'advertiser' && typeof advertiserCarousel !== 'undefined' && advertiserCarousel) {
                         advertiserCarousel.updateHeight();
                     }
                 });
@@ -509,7 +524,10 @@
             const modal = document.getElementById('join-modal');
             const openModalButtons = document.querySelectorAll('.open-modal-button');
             const closeModalButton = document.getElementById('close-modal-button');
+            const formContainer = document.getElementById('form-container'); // NEW
             const form = document.getElementById('waitlist-form');
+            const successCard = document.getElementById('success-card'); // NEW
+            const copyLinkButton = document.getElementById('copy-link-button'); // NEW
             const messageEl = document.getElementById('modal-message');
 
             const updateModalContent = (type) => {
@@ -521,10 +539,10 @@
                 const recaptchaNotice = document.getElementById('recaptcha-notice');
 
                 let fieldsHTML = `
-                    <div><input type="text" name="name" placeholder="Jouw naam" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                    <div><input type="text" name="name" placeholder="Jouw naam" class="w-full p-3 border border-gray-300 rounded-lg" required pattern="[A-Za-zÀ-ÖØ-öø-ÿ\\s'-]+" title="Gelieve enkel letters, spaties, en koppeltekens te gebruiken."></div>
                     <div><input type="email" name="email" placeholder="Jouw e-mailadres" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
                     <div id="extra-field-container"></div>
-                    <div><input type="tel" name="phone" placeholder="Telefoonnummer" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                    <div><input type="tel" name="phone" placeholder="Telefoonnummer" class="w-full p-3 border border-gray-300 rounded-lg" required pattern="^[\\d\\s\\+\\-\\(\\)]+$" title="Gelieve een geldig telefoonnummer in te geven."></div>
                 `;
                 
                 fields.innerHTML = fieldsHTML;
@@ -533,7 +551,7 @@
 
                 if (type === 'driver') {
                     title.textContent = 'Join de Wachtlijst als Bestuurder';
-                    extraFieldContainer.innerHTML = '<div><input type="number" name="km" placeholder="Kilometers vorig jaar" class="w-full p-3 border border-gray-300 rounded-lg" required></div>';
+                    extraFieldContainer.innerHTML = '<div><input type="number" name="km" placeholder="Kilometers vorig jaar" class="w-full p-3 border border-gray-300 rounded-lg" required min="0" pattern="\\d+" title="Gelieve enkel cijfers in te geven."></div>';
                     submitButton.textContent = 'Verzeker mijn plek';
                     disclaimer.textContent = 'Slechts 500 plekken beschikbaar.';
                     consentHTML = `
@@ -558,8 +576,14 @@
             
             const handleFormSubmit = async (e) => {
                 e.preventDefault();
-                messageEl.textContent = 'Submitting...';
+                messageEl.textContent = '';
                 messageEl.classList.remove('text-green-600', 'text-red-600');
+
+                // Check form validity before proceeding
+                if (!form.checkValidity()) {
+                    form.reportValidity(); // This triggers the browser's validation UI
+                    return; // Stop the submission if the form is invalid
+                }
                 
                 const recaptchaToken = grecaptcha.getResponse();
                 if (recaptchaToken.length === 0) {
@@ -567,6 +591,8 @@
                     messageEl.classList.add('text-red-600');
                     return; 
                 }
+                
+                messageEl.textContent = 'Submitting...';
                 
                 // Get form data
                 const formData = {};
@@ -590,9 +616,7 @@
                     const result = await response.json();
 
                     if (response.ok) {
-                        messageEl.textContent = result.message || 'Check your inbox/sms to confirm your registration.';
-                        messageEl.classList.add('text-green-600');
-                        
+                        // SUCCESS LOGIC UPDATED
                         confetti({
                             particleCount: 100,
                             spread: 70,
@@ -600,8 +624,10 @@
                             colors: ['#F97316', '#1a202c', '#FFFFFF']
                         });
 
-                        form.reset();
-                        grecaptcha.reset();
+                        // Hide form and show success card
+                        formContainer.classList.add('hidden');
+                        successCard.classList.remove('hidden');
+                        
                     } else {
                         // Handle errors from the API
                         messageEl.textContent = result.message || 'An error occurred. Please try again.';
@@ -616,8 +642,26 @@
                 }
             };
 
+            // NEW: Functionality for the copy link button
+            copyLinkButton.addEventListener('click', () => {
+                navigator.clipboard.writeText(window.location.origin).then(() => {
+                    copyLinkButton.textContent = 'Gekopieerd!';
+                    setTimeout(() => {
+                        copyLinkButton.textContent = 'Kopieer Link';
+                    }, 2000);
+                });
+            });
+
+
             openModalButtons.forEach(button => {
                 button.addEventListener('click', () => {
+                    // NEW: Reset modal to initial state on open
+                    form.reset();
+                    if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
+                    messageEl.textContent = '';
+                    formContainer.classList.remove('hidden');
+                    successCard.classList.add('hidden');
+
                     const activeTab = document.querySelector('.tab-button.active').getAttribute('data-tab');
                     updateModalContent(activeTab);
                     modal.style.display = 'flex';
@@ -626,15 +670,11 @@
 
             closeModalButton.addEventListener('click', () => {
                 modal.style.display = 'none';
-                messageEl.textContent = '';
-                if(typeof grecaptcha !== 'undefined') grecaptcha.reset();
             });
             
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
                     modal.style.display = 'none';
-                    messageEl.textContent = '';
-                    if(typeof grecaptcha !== 'undefined') grecaptcha.reset();
                 }
             });
 
