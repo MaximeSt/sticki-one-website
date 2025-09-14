@@ -322,7 +322,13 @@
             
             <div id="form-container">
                 <form id="waitlist-form" novalidate>
-                    <h3 id="modal-title" class="text-2xl font-bold text-center mb-6"></h3>
+                    <h3 id="modal-title" class="text-2xl font-bold text-center"></h3>
+<div class="my-6 flex justify-center">
+    <div class="bg-gray-200 p-1 rounded-xl flex items-center space-x-1 text-sm">
+        <button class="modal-tab-button py-2 px-6 rounded-lg font-semibold" data-tab="driver">Bestuurder</button>
+        <button class="modal-tab-button py-2 px-6 rounded-lg font-semibold" data-tab="advertiser">Adverteerder</button>
+    </div>
+</div>
                     <div id="form-fields" class="space-y-4">
                         </div>
                     
@@ -414,7 +420,6 @@
                         }
                     });
                     
-                    // Recalculate height on tab switch to prevent overlap
                     if (target === 'driver' && typeof driverCarousel !== 'undefined' && driverCarousel) {
                         driverCarousel.updateHeight();
                     } else if (target === 'advertiser' && typeof advertiserCarousel !== 'undefined' && advertiserCarousel) {
@@ -460,30 +465,26 @@
                 });
                 
                 reorderSlides();
-                
                 window.addEventListener('resize', updateHeight);
-                
                 return { updateHeight };
             }
             const driverCarousel = setupCarousel('driver');
             const advertiserCarousel = setupCarousel('advertiser');
-            
-            // Set initial height of carousels AFTER page is loaded and visible
             if (driverCarousel) driverCarousel.updateHeight();
             if (advertiserCarousel) advertiserCarousel.updateHeight();
-
 
             // Modal functionality
             const modal = document.getElementById('join-modal');
             const openModalButtons = document.querySelectorAll('.open-modal-button');
             const closeModalButton = document.getElementById('close-modal-button');
-            const formContainer = document.getElementById('form-container'); // NEW
+            const formContainer = document.getElementById('form-container');
             const form = document.getElementById('waitlist-form');
-            const successCard = document.getElementById('success-card'); // NEW
-            const copyLinkButton = document.getElementById('copy-link-button'); // NEW
+            const successCard = document.getElementById('success-card');
+            const copyLinkButton = document.getElementById('copy-link-button');
             const messageEl = document.getElementById('modal-message');
 
             const updateModalContent = (type) => {
+                const modalTabs = document.querySelectorAll('.modal-tab-button');
                 const title = document.getElementById('modal-title');
                 const fields = document.getElementById('form-fields');
                 const consentFields = document.getElementById('consent-fields');
@@ -525,6 +526,14 @@
                 consentFields.innerHTML = consentHTML;
                 recaptchaNotice.innerHTML = `Deze site wordt beschermd door reCAPTCHA en het <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="underline">Privacybeleid</a> en de <a href="https://policies.google.com/terms" target="_blank" rel="noopener" class="underline">Servicevoorwaarden</a> van Google zijn van toepassing.`;
 
+                // Update de active state van de switcher in de modal
+                modalTabs.forEach(tab => {
+                    if (tab.getAttribute('data-tab') === type) {
+                        tab.classList.add('active');
+                    } else {
+                        tab.classList.remove('active');
+                    }
+                });
             };
             
             const handleFormSubmit = async (e) => {
@@ -532,10 +541,9 @@
                 messageEl.textContent = '';
                 messageEl.classList.remove('text-green-600', 'text-red-600');
 
-                // Check form validity before proceeding
                 if (!form.checkValidity()) {
-                    form.reportValidity(); // This triggers the browser's validation UI
-                    return; // Stop the submission if the form is invalid
+                    form.reportValidity();
+                    return;
                 }
                 
                 const recaptchaToken = grecaptcha.getResponse();
@@ -547,7 +555,6 @@
                 
                 messageEl.textContent = 'Submitting...';
                 
-                // Get form data
                 const formData = {};
                 new FormData(e.target).forEach((value, key) => {
                     formData[key] = value;
@@ -569,25 +576,19 @@
                     const result = await response.json();
 
                     if (response.ok) {
-                        // SUCCESS LOGIC UPDATED
                         confetti({
                             particleCount: 100,
                             spread: 70,
                             origin: { y: 0.6 },
                             colors: ['#F97316', '#1a202c', '#FFFFFF']
                         });
-
-                        // Hide form and show success card
                         formContainer.classList.add('hidden');
                         successCard.classList.remove('hidden');
-                        
                     } else {
-                        // Handle errors from the API
                         messageEl.textContent = result.message || 'An error occurred. Please try again.';
                         messageEl.classList.add('text-red-600');
                         grecaptcha.reset();
                     }
-
                 } catch (error) {
                     messageEl.textContent = 'A network error occurred. Please try again.';
                     messageEl.classList.add('text-red-600');
@@ -595,7 +596,6 @@
                 }
             };
 
-            // NEW: Functionality for the copy link button
             copyLinkButton.addEventListener('click', () => {
                 navigator.clipboard.writeText(window.location.origin || window.location.href).then(() => {
                     copyLinkButton.textContent = 'Gekopieerd!';
@@ -605,17 +605,14 @@
                 });
             });
 
-
             openModalButtons.forEach(button => {
                 button.addEventListener('click', () => {
-                    // NEW: Reset modal to initial state on open
                     form.reset();
                     if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
                     messageEl.textContent = '';
                     formContainer.classList.remove('hidden');
                     successCard.classList.add('hidden');
-                    copyLinkButton.textContent = 'Kopieer Link'; // Reset button text
-
+                    copyLinkButton.textContent = 'Kopieer Link';
                     const activeTab = document.querySelector('.tab-button.active').getAttribute('data-tab');
                     updateModalContent(activeTab);
                     modal.style.display = 'flex';
@@ -634,7 +631,6 @@
 
             form.addEventListener('submit', handleFormSubmit);
 
-            // Initialize modal for the default active tab
             const initialTab = document.querySelector('.tab-button.active').getAttribute('data-tab');
             updateModalContent(initialTab);
 
@@ -643,7 +639,6 @@
             const acceptBtn = document.getElementById('cookie-accept');
             const declineBtn = document.getElementById('cookie-decline');
 
-            // Check for cookie consent on page load
             if (!localStorage.getItem('cookie_consent')) {
                 cookieBanner.classList.add('active');
             }
@@ -658,21 +653,27 @@
                 cookieBanner.classList.remove('active');
             });
 
-            // --- NIEUW: Logica voor "Join" knoppen in de header ---
+            // --- Logica voor "Join" knoppen in de header ---
             const headerJoinButtons = document.querySelectorAll('.header-join-button');
             headerJoinButtons.forEach(button => {
                 button.addEventListener('click', () => {
-                    // Reset de modal naar de beginstaat
                     form.reset();
                     if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
                     messageEl.textContent = '';
                     formContainer.classList.remove('hidden');
                     successCard.classList.add('hidden');
                     copyLinkButton.textContent = 'Kopieer Link';
-
-                    // Forceer de modal om te openen met de 'driver' inhoud
                     updateModalContent('driver'); 
                     modal.style.display = 'flex';
+                });
+            });
+
+            // --- Logica voor de switcher IN de modal ---
+            const modalTabs = document.querySelectorAll('.modal-tab-button');
+            modalTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const selectedTab = tab.getAttribute('data-tab');
+                    updateModalContent(selectedTab);
                 });
             });
         });
