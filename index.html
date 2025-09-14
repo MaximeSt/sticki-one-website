@@ -92,24 +92,6 @@
             width: 100%;
         }
         
-        /* Preloader Animation */
-        #preloader {
-            transition: opacity 0.8s ease-in-out;
-        }
-        #preloader-logo {
-            transition: all 1s ease-in-out;
-        }
-        .preloader-active #preloader-logo {
-            transform: translate(-50vw, -50vh) scale(0.6) translateY(40px) translateX(110px);
-        }
-        .page-content {
-             opacity: 0;
-             transition: opacity 1s ease-in-out;
-        }
-        .page-loaded .page-content {
-            opacity: 1;
-        }
-        
         .faq-container {
             transition: height 0.5s ease-in-out;
         }
@@ -123,21 +105,13 @@
 </head>
 <body class="text-gray-800">
 
-    <div id="preloader" class="fixed inset-0 bg-white z-[9999] flex items-center justify-center">
-        <div id="preloader-logo">
-            <div class="flex items-center gap-2 text-4xl font-bold">
-                <svg width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="16" fill="#F97316"/></svg>
-                <span class="font-medium text-gray-900">Sticki</span><span class="font-light text-gray-700">.one</span>
-            </div>
-        </div>
-    </div>
-
     <div class="page-content">
         <header class="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-lg z-50 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-20">
                     <div class="flex-shrink-0">
-                        <a href="index.html" class="flex items-center gap-2 text-2xl font-bold opacity-0" id="header-logo"> <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="16" fill="#F97316"/></svg>
+                        <a href="index.html" class="flex items-center gap-2 text-2xl font-bold" id="header-logo">
+                            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="16" fill="#F97316"/></svg>
                             <span class="font-medium text-gray-900">Sticki</span><span class="font-light text-gray-700">.one</span>
                         </a>
                     </div>
@@ -396,34 +370,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-             // Preloader Animation Logic
-            const body = document.body;
-            const preloader = document.getElementById('preloader');
-            const headerLogo = document.getElementById('header-logo');
-
-            body.classList.add('preloader-active');
-
-            // Start the animation after a short delay to ensure rendering
-            setTimeout(() => {
-                // After 1.2s, start fading out the preloader and fading in the content
-                setTimeout(() => {
-                    preloader.style.opacity = '0';
-                    body.classList.add('page-loaded');
-                    headerLogo.style.opacity = '1';
-
-                    // Set initial height of carousels AFTER page is loaded and visible
-                    if (typeof driverCarousel !== 'undefined' && driverCarousel) driverCarousel.updateHeight();
-                    if (typeof advertiserCarousel !== 'undefined' && advertiserCarousel) advertiserCarousel.updateHeight();
-                    
-                }, 1200);
-
-                // After the fade out animation is complete, remove the preloader
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 2200); // 1200ms delay + 1000ms transition
-            }, 100);
-
-
             // Mobile menu toggle
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
@@ -518,6 +464,10 @@
             }
             const driverCarousel = setupCarousel('driver');
             const advertiserCarousel = setupCarousel('advertiser');
+            
+            // Set initial height of carousels AFTER page is loaded and visible
+            if (driverCarousel) driverCarousel.updateHeight();
+            if (advertiserCarousel) advertiserCarousel.updateHeight();
 
 
             // Modal functionality
@@ -644,7 +594,7 @@
 
             // NEW: Functionality for the copy link button
             copyLinkButton.addEventListener('click', () => {
-                navigator.clipboard.writeText(window.location.origin).then(() => {
+                navigator.clipboard.writeText(window.location.origin || window.location.href).then(() => {
                     copyLinkButton.textContent = 'Gekopieerd!';
                     setTimeout(() => {
                         copyLinkButton.textContent = 'Kopieer Link';
@@ -661,6 +611,7 @@
                     messageEl.textContent = '';
                     formContainer.classList.remove('hidden');
                     successCard.classList.add('hidden');
+                    copyLinkButton.textContent = 'Kopieer Link'; // Reset button text
 
                     const activeTab = document.querySelector('.tab-button.active').getAttribute('data-tab');
                     updateModalContent(activeTab);
