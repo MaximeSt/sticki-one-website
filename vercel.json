@@ -1,14 +1,48 @@
 {
-  "rewrites": [
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
+
+  "headers": [
     {
-      "source": "/:path((?!api/).*)",
-      "destination": "/:path.html"
+      "source": "/(privacy|cookies|terms|contact-privacy|subverwerkers|methodology)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    },
+    {
+      "source": "/(privacy|cookies|terms|contact-privacy|subverwerkers|methodology).html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "Permissions-Policy", "value": "geolocation=(), camera=(), microphone=()" }
+      ]
     }
+  ],
+
+  "rewrites": [
+    { "source": "/firstdrop",          "destination": "/index.html" },
+    { "source": "/privacy",            "destination": "/privacy.html" },
+    { "source": "/cookies",            "destination": "/cookies.html" },
+    { "source": "/terms",              "destination": "/terms.html" },
+    { "source": "/contact-privacy",    "destination": "/contact-privacy.html" },
+    { "source": "/subverwerkers",      "destination": "/subverwerkers.html" },
+    { "source": "/methodology",        "destination": "/methodology.html" }
+  ],
+
+  "redirects": [
+    { "source": "/privacy.html",         "destination": "/privacy",         "permanent": true },
+    { "source": "/cookies.html",         "destination": "/cookies",         "permanent": true },
+    { "source": "/terms.html",           "destination": "/terms",           "permanent": true },
+    { "source": "/contact-privacy.html", "destination": "/contact-privacy", "permanent": true },
+    { "source": "/subverwerkers.html",   "destination": "/subverwerkers",   "permanent": true },
+    { "source": "/methodology.html",     "destination": "/methodology",     "permanent": true }
   ]
-   "rewrites": [
-  { "source": "/privacy", "destination": "/privacy.html" },
-  { "source": "/cookies", "destination": "/cookies.html" },
-  { "source": "/terms", "destination": "/terms.html" },
-  { "source": "/contact-privacy", "destination": "/contact-privacy.html" },
-]
 }
