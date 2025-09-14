@@ -523,37 +523,82 @@ document.addEventListener('DOMContentLoaded', function () {
     setupFaqCarousel('advertiser');
 
     // --- Modal functionality ---
-    const updateModalContent = (type) => {
-        const modalTabs = document.querySelectorAll('.modal-tab-button');
-        const title = document.getElementById('modal-title');
-        const fields = document.getElementById('form-fields');
-        const consentFields = document.getElementById('consent-fields');
-        const submitButton = document.getElementById('modal-submit-button');
-        const disclaimer = document.getElementById('modal-disclaimer');
-        const recaptchaNotice = document.getElementById('recaptcha-notice');
-        let fieldsHTML = `<div><input type="text" name="name" placeholder="Jouw naam" class="w-full p-3 border border-gray-300 rounded-lg" required></div><div><input type="email" name="email" placeholder="Jouw e-mailadres" class="w-full p-3 border border-gray-300 rounded-lg" required></div><div id="extra-field-container"></div><div><input type="tel" name="phone" placeholder="Telefoonnummer" class="w-full p-3 border border-gray-300 rounded-lg" required></div>`;
-        fields.innerHTML = fieldsHTML;
-        const extraFieldContainer = document.getElementById('extra-field-container');
-        let consentHTML = '';
-        if (type === 'driver') {
-            title.textContent = 'Join de Wachtlijst als Bestuurder';
-            extraFieldContainer.innerHTML = '<div><input type="number" name="km" placeholder="Kilometers vorig jaar" class="w-full p-3 border border-gray-300 rounded-lg" required></div>';
-            submitButton.textContent = 'Verzeker mijn plek';
-            disclaimer.textContent = 'Slechts 500 plekken beschikbaar.';
-            consentHTML = `<label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="age_confirm" class="mr-2 mt-1" required><span class="flex-1">Ik ben 18 jaar of ouder.</span></label><label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="owner_confirm" class="mr-2 mt-1" required><span class="flex-1">Ik ben eigenaar van de wagen of heb toestemming van de eigenaar/lease-maatschappij.</span></label><label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="marketing_consent" class="mr-2 mt-1"><span class="flex-1">Ik wil nieuws, updates en aanbiedingen ontvangen via e-mail/sms.</span></label>`;
-        } else {
-            title.textContent = 'Word een Launch Partner';
-            extraFieldContainer.innerHTML = '<div><input type="text" name="company" placeholder="Naam bedrijf" class="w-full p-3 border border-gray-300 rounded-lg" required></div>';
-            submitButton.textContent = 'Ik heb interesse!';
-            disclaimer.textContent = 'Let op: er zijn meer aanmeldingen dan de 5 beschikbare partnerplekken.';
-            consentHTML = `<label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="age_confirm" class="mr-2 mt-1" required><span class="flex-1">Ik ben 18 jaar of ouder.</span></label><label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="marketing_consent" class="mr-2 mt-1"><span class="flex-1">Ik wil nieuws, updates en aanbiedingen ontvangen via e-mail/sms.</span></label>`;
-        }
-        consentFields.innerHTML = consentHTML;
-        recaptchaNotice.innerHTML = `Deze site wordt beschermd door reCAPTCHA en het <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="underline">Privacybeleid</a> en de <a href="https://policies.google.com/terms" target="_blank" rel="noopener" class="underline">Servicevoorwaarden</a> van Google zijn van toepassing.`;
-        modalTabs.forEach(tab => {
-            tab.classList.toggle('active', tab.getAttribute('data-tab') === type);
-        });
-    };
+const updateModalContent = (type) => {
+                const modalTabs = document.querySelectorAll('.modal-tab-button');
+                const title = document.getElementById('modal-title');
+                const fields = document.getElementById('form-fields');
+                const consentFields = document.getElementById('consent-fields');
+                const submitButton = document.getElementById('modal-submit-button');
+                const disclaimer = document.getElementById('modal-disclaimer');
+                const recaptchaNotice = document.getElementById('recaptcha-notice');
+
+                // Stap 1: Velden met meer ruimte (space-y-5)
+                let fieldsHTML = `
+                    <div id="extra-field-container"></div>
+                    <div><input type="text" name="name" placeholder="Jouw naam" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                    <div><input type="email" name="email" placeholder="Jouw e-mailadres" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                    <div><input type="tel" name="phone" placeholder="Telefoonnummer" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                `;
+                
+                fields.innerHTML = fieldsHTML;
+                const extraFieldContainer = document.getElementById('extra-field-container');
+                let consentHTML = '';
+
+                if (type === 'driver') {
+                    title.textContent = 'Join de Wachtlijst als Bestuurder';
+                    // Voeg het 'km' veld bovenaan toe voor logische flow
+                    extraFieldContainer.innerHTML = '<div><input type="number" name="km" placeholder="Kilometers vorig jaar" class="w-full p-3 border border-gray-300 rounded-lg" required></div>';
+                    submitButton.textContent = 'Verzeker mijn plek';
+                    disclaimer.textContent = 'Slechts 500 plekken beschikbaar.';
+                    
+                    // Stap 2: Vereiste vinkjes groeperen en tekst inkorten
+                    consentHTML = `
+                        <div class="border rounded-lg p-4 space-y-4">
+                            <label class="flex items-start text-sm text-gray-600">
+                                <input type="checkbox" name="age_confirm" class="mr-3 mt-1 h-5 w-5 shrink-0" required>
+                                <span class="flex-1">Ik bevestig dat ik 18 jaar of ouder ben.</span>
+                            </label>
+                            <label class="flex items-start text-sm text-gray-600">
+                                <input type="checkbox" name="owner_confirm" class="mr-3 mt-1 h-5 w-5 shrink-0" required>
+                                <span class="flex-1">Ik ben eigenaar van de wagen of heb toestemming deze te laten bestickeren.</span>
+                            </label>
+                        </div>
+                        <div class="pt-2">
+                             <label class="flex items-start text-sm text-gray-600">
+                                <input type="checkbox" name="marketing_consent" class="mr-3 mt-1 h-5 w-5 shrink-0">
+                                <span class="flex-1">Ja, hou me op de hoogte van nieuws en aanbiedingen.</span>
+                            </label>
+                        </div>
+                    `;
+                } else { // advertiser
+                    title.textContent = 'Word een Launch Partner';
+                    // Voeg het 'bedrijf' veld bovenaan toe
+                    extraFieldContainer.innerHTML = '<div><input type="text" name="company" placeholder="Naam bedrijf" class="w-full p-3 border border-gray-300 rounded-lg" required></div>';
+                    submitButton.textContent = 'Ik heb interesse!';
+                    disclaimer.textContent = 'Let op: er zijn meer aanmeldingen dan de 5 beschikbare partnerplekken.';
+
+                    consentHTML = `
+                        <div class="border rounded-lg p-4 space-y-4">
+                            <label class="flex items-start text-sm text-gray-600">
+                                <input type="checkbox" name="age_confirm" class="mr-3 mt-1 h-5 w-5 shrink-0" required>
+                                <span class="flex-1">Ik bevestig dat ik 18 jaar of ouder ben en gemachtigd ben om te handelen voor dit bedrijf.</span>
+                            </label>
+                        </div>
+                        <div class="pt-2">
+                             <label class="flex items-start text-sm text-gray-600">
+                                <input type="checkbox" name="marketing_consent" class="mr-3 mt-1 h-5 w-5 shrink-0">
+                                <span class="flex-1">Ja, hou me op de hoogte van nieuws en aanbiedingen.</span>
+                            </label>
+                        </div>
+                    `;
+                }
+                consentFields.innerHTML = consentHTML;
+                recaptchaNotice.innerHTML = `Deze site wordt beschermd door reCAPTCHA en het <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="underline">Privacybeleid</a> en de <a href="https://policies.google.com/terms" target="_blank" rel="noopener" class="underline">Servicevoorwaarden</a> van Google zijn van toepassing.`;
+
+                modalTabs.forEach(tab => {
+                    tab.classList.toggle('active', tab.getAttribute('data-tab') === type);
+                });
+            };
     
     const handleFormSubmit = async (e) => { e.preventDefault(); messageEl.textContent = ''; if (!form.checkValidity()) { form.reportValidity(); return; } /* ... rest van submit logica ... */ };
     
