@@ -442,6 +442,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const successCard = document.getElementById('success-card');
     const copyLinkButton = document.getElementById('copy-link-button');
     const messageEl = document.getElementById('modal-message');
+    let currentStep = 1;
+    const totalSteps = 2;
 
     // --- Mobile menu toggle ---
     const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -484,7 +486,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function setupFaqCarousel(type) {
         const container = document.getElementById(`faq-${type}-container`);
         if (!container) return;
-
         const inner = container.querySelector('.faq-items-wrapper');
         const prevBtn = container.querySelector(`.faq-prev-${type}`);
         const nextBtn = container.querySelector(`.faq-next-${type}`);
@@ -524,28 +525,24 @@ document.addEventListener('DOMContentLoaded', function () {
             if (touchStartX - touchEndX > swipeThreshold) goToNext();
             else if (touchEndX - touchStartX > swipeThreshold) goToPrev();
         });
-
         startAutoPlay();
     }
-
     setupFaqCarousel('driver');
     setupFaqCarousel('advertiser');
 
     // --- Multi-Step Form & Modal Logic ---
-    let currentStep = 1;
-    const totalSteps = 2;
     const progressIndicator = document.getElementById('progress-indicator');
     const formSteps = document.querySelectorAll('.form-step');
 
     function showStep(stepNumber) {
         formSteps.forEach(step => step.classList.toggle('active', parseInt(step.dataset.step) === stepNumber));
-        progressIndicator.textContent = `Stap ${stepNumber} van ${totalSteps}`;
+        if(progressIndicator) progressIndicator.textContent = `Stap ${stepNumber} van ${totalSteps}`;
         currentStep = stepNumber;
     }
 
     function validateStep(stepNumber) {
         const currentStepDiv = document.querySelector(`.form-step[data-step="${stepNumber}"]`);
-        const inputs = currentStepDiv.querySelectorAll('input[required], select[required], textarea[required]');
+        const inputs = currentStepDiv.querySelectorAll('input[required]');
         for (const input of inputs) {
             if (!input.checkValidity()) {
                 form.reportValidity();
@@ -558,24 +555,107 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.next-step-btn').forEach(button => button.addEventListener('click', () => { if (validateStep(currentStep)) showStep(currentStep + 1); }));
     document.querySelectorAll('.prev-step-btn').forEach(button => button.addEventListener('click', () => { showStep(currentStep - 1); }));
     
-    // De rest van de modal, form, cookie, etc. logica
-    const updateModalContent = (type) => { /* ... De volledige functie ... */ };
-    const handleFormSubmit = async (e) => { /* ... De volledige functie ... */ };
+    const updateModalContent = (type) => {
+        const modalTabs = document.querySelectorAll('.modal-tab-button');
+        const title = document.getElementById('modal-title');
+        const step1Fields = document.getElementById('step-1-fields');
+        const step2Fields = document.getElementById('step-2-fields');
+        const submitButton = document.getElementById('modal-submit-button');
+        const disclaimer = document.getElementById('modal-disclaimer');
+        
+        let step1HTML = '';
+        let step2HTML = '';
+
+        if (type === 'driver') {
+            title.textContent = 'Join de Wachtlijst als Bestuurder';
+            submitButton.textContent = 'Verzeker mijn plek';
+            disclaimer.textContent = 'Slechts 500 plekken beschikbaar.';
+            step1HTML = `
+                <div><input type="text" name="name" placeholder="Jouw naam" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                <div><input type="email" name="email" placeholder="Jouw e-mailadres" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                <div><input type="tel" name="phone" placeholder="Telefoonnummer" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+            `;
+            step2HTML = `
+                <div class="border rounded-lg p-4 space-y-4">
+                    <label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="age_confirm" class="mr-3 mt-1 h-5 w-5 shrink-0" required><span class="flex-1">Ik bevestig dat ik 18 jaar of ouder ben.</span></label>
+                    <label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="owner_confirm" class="mr-3 mt-1 h-5 w-5 shrink-0" required><span class="flex-1">Ik ben eigenaar van de wagen of heb toestemming deze te laten bestickeren.</span></label>
+                </div>
+                <div class="pt-2"><label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="marketing_consent" class="mr-3 mt-1 h-5 w-5 shrink-0"><span class="flex-1">Ja, hou me op de hoogte van nieuws en aanbiedingen.</span></label></div>
+            `;
+        } else { // advertiser
+            title.textContent = 'Word een Launch Partner';
+            submitButton.textContent = 'Verstuur aanvraag';
+            disclaimer.textContent = 'Let op: er zijn meer aanmeldingen dan de 5 beschikbare partnerplekken.';
+            step1HTML = `
+                <div><input type="text" name="company" placeholder="Naam bedrijf" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                <div><input type="text" name="name" placeholder="Jouw naam" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                <div><input type="email" name="email" placeholder="Jouw e-mailadres" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                <div><input type="tel" name="phone" placeholder="Telefoonnummer" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+            `;
+            step2HTML = `
+                <div class="border rounded-lg p-4 space-y-4"><label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="age_confirm" class="mr-3 mt-1 h-5 w-5 shrink-0" required><span class="flex-1">Ik bevestig dat ik gemachtigd ben om te handelen voor dit bedrijf.</span></label></div>
+                <div class="pt-2"><label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="marketing_consent" class="mr-3 mt-1 h-5 w-5 shrink-0"><span class="flex-1">Ja, hou me op de hoogte van nieuws en aanbiedingen.</span></label></div>
+            `;
+        }
+        step1Fields.innerHTML = step1HTML;
+        step2Fields.innerHTML = step2HTML;
+
+        modalTabs.forEach(tab => {
+            tab.classList.toggle('active', tab.getAttribute('data-tab') === type);
+        });
+        showStep(1);
+    };
     
-    // (Hier plakken we de volledige, correcte functies)
-    const modalTabs = document.querySelectorAll('.modal-tab-button');
-    const headerJoinButtons = document.querySelectorAll('.header-join-button');
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        if (!validateStep(2)) return;
+        messageEl.textContent = 'Verzenden...';
+        // Hier zou de volledige fetch-logica komen
+    };
+    
+    copyLinkButton.addEventListener('click', () => { navigator.clipboard.writeText(window.location.href).then(() => { copyLinkButton.textContent = 'Gekopieerd!'; setTimeout(() => { copyLinkButton.textContent = 'Kopieer Link'; }, 2000); }); });
+    
     const openModalButtons = document.querySelectorAll('.open-modal-button');
+    openModalButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            form.reset(); if (typeof grecaptcha !== 'undefined') grecaptcha.reset(); messageEl.textContent = ''; formContainer.classList.remove('hidden'); successCard.classList.add('hidden');
+            const activeTab = document.querySelector('.tab-button.active').getAttribute('data-tab');
+            updateModalContent(activeTab);
+            modal.style.display = 'flex';
+        });
+    });
+
     const closeModalButton = document.getElementById('close-modal-button');
+    closeModalButton.addEventListener('click', () => { modal.style.display = 'none'; });
+    modal.addEventListener('click', (e) => { if (e.target === modal) { modal.style.display = 'none'; } });
+    form.addEventListener('submit', handleFormSubmit);
+    
+    const headerJoinButtons = document.querySelectorAll('.header-join-button');
+    headerJoinButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            form.reset(); if (typeof grecaptcha !== 'undefined') grecaptcha.reset(); messageEl.textContent = ''; formContainer.classList.remove('hidden'); successCard.classList.add('hidden');
+            updateModalContent('driver'); 
+            modal.style.display = 'flex';
+        });
+    });
+    
+    const modalTabs = document.querySelectorAll('.modal-tab-button');
+    modalTabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            e.preventDefault();
+            const selectedTab = tab.getAttribute('data-tab');
+            updateModalContent(selectedTab);
+        });
+    });
+    updateModalContent('driver');
+
+    // --- Cookie Banner Logic ---
     const cookieBanner = document.getElementById('cookie-banner');
     const acceptBtn = document.getElementById('cookie-accept');
     const declineBtn = document.getElementById('cookie-decline');
-    
-    // Volledige functies hieronder
-    // (Ik plak de volledige functies hier opnieuw om zeker te zijn dat ze compleet zijn)
-    
-    // De rest van het script (inclusief updateModalContent, handleFormSubmit, etc.)
-    // ...
+    if (!localStorage.getItem('cookie_consent')) { cookieBanner.classList.add('active'); }
+    acceptBtn.addEventListener('click', () => { localStorage.setItem('cookie_consent', 'accepted'); cookieBanner.classList.remove('active'); });
+    declineBtn.addEventListener('click', () => { localStorage.setItem('cookie_consent', 'declined'); cookieBanner.classList.remove('active'); });
 });
 </script>
 
