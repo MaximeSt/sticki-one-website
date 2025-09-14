@@ -48,7 +48,8 @@ body {
             initial-value: 132deg;
             inherits: false;
         }
-
+.form-step { display: none; }
+.form-step.active { display: block; }
         @keyframes spin {
             0% { --rotate: 0deg; }
             100% { --rotate: 360deg; }
@@ -338,50 +339,62 @@ body {
         </div>
     </footer>
 
-    <div id="join-modal" class="form-modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4 z-[100]">
-        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full relative animate-slideIn">
+<div id="join-modal" class="form-modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4 z-[100]">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-8 max-w-lg w-full relative animate-slideIn">
             <button id="close-modal-button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 text-2xl">&times;</button>
             
             <div id="form-container">
                 <form id="waitlist-form" novalidate>
-                    <h3 id="modal-title" class="text-2xl font-bold text-center"></h3>
-<div class="my-6 flex justify-center">
-    <div class="bg-gray-200 p-1 rounded-xl flex items-center space-x-1 text-sm">
-        <button class="modal-tab-button py-2 px-6 rounded-lg font-semibold" data-tab="driver">Bestuurder</button>
-        <button class="modal-tab-button py-2 px-6 rounded-lg font-semibold" data-tab="advertiser">Adverteerder</button>
-    </div>
-</div>
-                    <div id="form-fields" class="space-y-4">
-                        </div>
                     
-                    <div id="consent-fields" class="space-y-3 mt-6">
+                    <div class="text-center mb-6">
+                        <h3 id="modal-title" class="text-2xl font-bold"></h3>
+                        <p id="progress-indicator" class="text-sm text-gray-500 mt-1"></p>
+                    </div>
+
+                    <div class="my-6 flex justify-center">
+                        <div class="bg-gray-200 p-1 rounded-xl flex items-center space-x-1 text-sm">
+                            <button type="button" class="modal-tab-button py-2 px-6 rounded-lg font-semibold" data-tab="driver">Bestuurder</button>
+                            <button type="button" class="modal-tab-button py-2 px-6 rounded-lg font-semibold" data-tab="advertiser">Adverteerder</button>
                         </div>
-                    
-                    <div class="g-recaptcha my-4 flex justify-center" data-sitekey="6Lf-FskrAAAAAB1UZzt92dUck8MgbDdWn5gcSkjh"></div> <button id="modal-submit-button" type="submit" class="w-full mt-2 bg-gray-800 text-white font-bold py-3 rounded-lg hover:bg-gray-900 transition"></button>
-                    <p id="modal-disclaimer" class="text-xs text-gray-500 mt-2 text-center"></p>
+                    </div>
+
+                    <div class="form-steps-container">
+                        
+                        <div class="form-step active" data-step="1">
+                            <div id="step-1-fields" class="space-y-4">
+                                </div>
+                            <div class="mt-6">
+                                <button type="button" class="next-step-btn w-full bg-gray-800 text-white font-bold py-3 rounded-lg hover:bg-gray-900 transition">Volgende</button>
+                            </div>
+                        </div>
+
+                        <div class="form-step" data-step="2">
+                            <div id="step-2-fields" class="space-y-4">
+                                </div>
+                            <div class="g-recaptcha my-4 flex justify-center" data-sitekey="6Lf-FskrAAAAAB1UZzt92dUck8MgbDdWn5gcSkjh"></div>
+                            
+                            <div class="mt-6 flex gap-4">
+                                <button type="button" class="prev-step-btn w-1/3 bg-gray-200 text-gray-800 font-bold py-3 rounded-lg hover:bg-gray-300 transition">Vorige</button>
+                                <button id="modal-submit-button" type="submit" class="w-2/3 bg-gray-800 text-white font-bold py-3 rounded-lg hover:bg-gray-900 transition"></button>
+                            </div>
+                            <p id="modal-disclaimer" class="text-xs text-gray-500 mt-2 text-center"></p>
+                        </div>
+
+                    </div>
 
                     <p class="text-xs text-gray-500 mt-4 text-center">
-                        Door te verzenden ga je akkoord met de verwerking van je gegevens voor contact rond de wachtlijst/lancering.
-                        Meer info in onze <a href="/privacy" class="underline">Privacyverklaring</a>.
+                        Door te verzenden ga je akkoord met de verwerking van je gegevens. Meer info in onze <a href="/privacy" class="underline">Privacyverklaring</a>.
                     </p>
-                     <p id="recaptcha-notice" class="text-xs text-gray-400 mt-2 text-center"></p>
-
                     <p id="modal-message" class="mt-4 text-center font-medium h-5"></p>
                 </form>
             </div>
 
             <div id="success-card" class="hidden text-center animate-fadeIn">
-                <div class="mb-6">
-                    <svg class="w-16 h-16 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                </div>
+                <div class="mb-6"><svg class="w-16 h-16 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
                 <h3 class="text-2xl font-bold text-gray-900 mb-2">Welkom aan boord!</h3>
-                <p class="text-gray-600 mb-8">Je plek op de wachtlijst is verzekerd. We nemen snel contact met je op met de volgende stappen. Hou je mailbox in de gaten!</p>
-                <div class="bg-gray-100 p-4 rounded-lg flex items-center justify-between">
-                    <span class="text-sm text-gray-700 truncate mr-4">Deel het met vrienden!</span>
-                    <button id="copy-link-button" class="bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg text-sm hover:bg-gray-900 transition whitespace-nowrap">Kopieer Link</button>
-                </div>
+                <p class="text-gray-600 mb-8">Je plek op de wachtlijst is verzekerd. We nemen snel contact met je op.</p>
+                <button id="copy-link-button" class="bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg text-sm hover:bg-gray-900 transition whitespace-nowrap">Kopieer Link</button>
             </div>
-
         </div>
     </div>
     
@@ -409,13 +422,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const successCard = document.getElementById('success-card');
     const copyLinkButton = document.getElementById('copy-link-button');
     const messageEl = document.getElementById('modal-message');
+    let currentStep = 1;
+    const totalSteps = 2;
 
     // --- Mobile menu toggle ---
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
-    mobileMenuButton.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
+    mobileMenuButton.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
 
     // --- Hero Carousel ---
     const heroCarouselInner = document.querySelector('#hero-carousel .carousel-inner');
@@ -448,159 +461,98 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     });
+    
+    // --- Multi-Step Form Logic ---
+    const progressIndicator = document.getElementById('progress-indicator');
+    const formSteps = document.querySelectorAll('.form-step');
 
-    // --- FAQ LOGICA: SWIPE & AUTOPLAY ---
-    function setupFaqCarousel(type) {
-        const container = document.getElementById(`faq-${type}-container`);
-        if (!container) return;
-
-        const inner = container.querySelector('.faq-items-wrapper') || container.querySelector('.flex');
-        const prevBtn = container.querySelector(`.faq-prev-${type}`);
-        const nextBtn = container.querySelector(`.faq-next-${type}`);
-        
-        if (!inner || !prevBtn || !nextBtn) return;
-
-        let index = 0;
-        const items = inner.querySelectorAll('.w-full');
-        const totalItems = items.length;
-        if (totalItems === 0) return;
-
-        let autoPlayInterval = null;
-        let isAutoPlaying = false;
-
-        const goToNext = () => {
-            index = (index + 1) % totalItems;
-            updateCarouselPosition();
-        };
-        const goToPrev = () => {
-            index = (index - 1 + totalItems) % totalItems;
-            updateCarouselPosition();
-        };
-        const updateCarouselPosition = () => {
-            inner.style.transform = `translateX(-${index * 100}%)`;
-        };
-
-        const startAutoPlay = () => {
-            if (isAutoPlaying || window.innerWidth >= 768) return;
-            isAutoPlaying = true;
-            autoPlayInterval = setInterval(goToNext, 20000);
-        };
-        const stopAutoPlay = () => {
-            if (!isAutoPlaying) return;
-            clearInterval(autoPlayInterval);
-            isAutoPlaying = false;
-        };
-
-        nextBtn.addEventListener('click', () => {
-            stopAutoPlay();
-            goToNext();
+    function showStep(stepNumber) {
+        formSteps.forEach(step => {
+            step.classList.toggle('active', parseInt(step.dataset.step) === stepNumber);
         });
-        prevBtn.addEventListener('click', () => {
-            stopAutoPlay();
-            goToPrev();
-        });
-
-        let touchStartX = 0;
-        inner.addEventListener('touchstart', (event) => {
-            stopAutoPlay();
-            touchStartX = event.changedTouches[0].screenX;
-        }, { passive: true });
-
-        inner.addEventListener('touchend', (event) => {
-            const touchEndX = event.changedTouches[0].screenX;
-            const swipeThreshold = 50;
-            if (touchStartX - touchEndX > swipeThreshold) {
-                goToNext();
-            } else if (touchEndX - touchStartX > swipeThreshold) {
-                goToPrev();
-            }
-        });
-
-        startAutoPlay();
+        progressIndicator.textContent = `Stap ${stepNumber} van ${totalSteps}`;
+        currentStep = stepNumber;
     }
 
-    setupFaqCarousel('driver');
-    setupFaqCarousel('advertiser');
+    function validateStep(stepNumber) {
+        const currentStepDiv = document.querySelector(`.form-step[data-step="${stepNumber}"]`);
+        const inputs = currentStepDiv.querySelectorAll('input[required]');
+        for (const input of inputs) {
+            if (!input.checkValidity()) {
+                form.reportValidity();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    document.querySelectorAll('.next-step-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            if (validateStep(currentStep)) {
+                showStep(currentStep + 1);
+            }
+        });
+    });
+
+    document.querySelectorAll('.prev-step-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            showStep(currentStep - 1);
+        });
+    });
 
     // --- Modal functionality ---
-const updateModalContent = (type) => {
-                const modalTabs = document.querySelectorAll('.modal-tab-button');
-                const title = document.getElementById('modal-title');
-                const fields = document.getElementById('form-fields');
-                const consentFields = document.getElementById('consent-fields');
-                const submitButton = document.getElementById('modal-submit-button');
-                const disclaimer = document.getElementById('modal-disclaimer');
-                const recaptchaNotice = document.getElementById('recaptcha-notice');
+    const updateModalContent = (type) => {
+        const modalTabs = document.querySelectorAll('.modal-tab-button');
+        const title = document.getElementById('modal-title');
+        const step1Fields = document.getElementById('step-1-fields');
+        const step2Fields = document.getElementById('step-2-fields');
+        const submitButton = document.getElementById('modal-submit-button');
+        const disclaimer = document.getElementById('modal-disclaimer');
+        
+        let step1HTML = '';
+        let step2HTML = '';
 
-                // Stap 1: Velden met meer ruimte (space-y-5)
-                let fieldsHTML = `
-                    <div id="extra-field-container"></div>
-                    <div><input type="text" name="name" placeholder="Jouw naam" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
-                    <div><input type="email" name="email" placeholder="Jouw e-mailadres" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
-                    <div><input type="tel" name="phone" placeholder="Telefoonnummer" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
-                `;
-                
-                fields.innerHTML = fieldsHTML;
-                const extraFieldContainer = document.getElementById('extra-field-container');
-                let consentHTML = '';
+        if (type === 'driver') {
+            title.textContent = 'Join de Wachtlijst als Bestuurder';
+            submitButton.textContent = 'Verzeker mijn plek';
+            disclaimer.textContent = 'Slechts 500 plekken beschikbaar.';
+            step1HTML = `
+                <div><input type="text" name="name" placeholder="Jouw naam" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                <div><input type="email" name="email" placeholder="Jouw e-mailadres" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                <div><input type="tel" name="phone" placeholder="Telefoonnummer" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+            `;
+            step2HTML = `
+                <div class="border rounded-lg p-4 space-y-4">
+                    <label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="age_confirm" class="mr-3 mt-1 h-5 w-5 shrink-0" required><span class="flex-1">Ik bevestig dat ik 18 jaar of ouder ben.</span></label>
+                    <label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="owner_confirm" class="mr-3 mt-1 h-5 w-5 shrink-0" required><span class="flex-1">Ik ben eigenaar van de wagen of heb toestemming deze te laten bestickeren.</span></label>
+                </div>
+                <div class="pt-2"><label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="marketing_consent" class="mr-3 mt-1 h-5 w-5 shrink-0"><span class="flex-1">Ja, hou me op de hoogte van nieuws en aanbiedingen.</span></label></div>
+            `;
+        } else { // advertiser
+            title.textContent = 'Word een Launch Partner';
+            submitButton.textContent = 'Verstuur aanvraag';
+            disclaimer.textContent = 'Let op: er zijn meer aanmeldingen dan de 5 beschikbare partnerplekken.';
+            step1HTML = `
+                <div><input type="text" name="company" placeholder="Naam bedrijf" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                <div><input type="text" name="name" placeholder="Jouw naam" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                <div><input type="email" name="email" placeholder="Jouw e-mailadres" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+                <div><input type="tel" name="phone" placeholder="Telefoonnummer" class="w-full p-3 border border-gray-300 rounded-lg" required></div>
+            `;
+            step2HTML = `
+                <div class="border rounded-lg p-4 space-y-4"><label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="age_confirm" class="mr-3 mt-1 h-5 w-5 shrink-0" required><span class="flex-1">Ik bevestig dat ik gemachtigd ben om te handelen voor dit bedrijf.</span></label></div>
+                <div class="pt-2"><label class="flex items-start text-sm text-gray-600"><input type="checkbox" name="marketing_consent" class="mr-3 mt-1 h-5 w-5 shrink-0"><span class="flex-1">Ja, hou me op de hoogte van nieuws en aanbiedingen.</span></label></div>
+            `;
+        }
+        step1Fields.innerHTML = step1HTML;
+        step2Fields.innerHTML = step2HTML;
 
-                if (type === 'driver') {
-                    title.textContent = 'Join de Wachtlijst als Bestuurder';
-                    // Voeg het 'km' veld bovenaan toe voor logische flow
-                    extraFieldContainer.innerHTML = '<div><input type="number" name="km" placeholder="Kilometers vorig jaar" class="w-full p-3 border border-gray-300 rounded-lg" required></div>';
-                    submitButton.textContent = 'Verzeker mijn plek';
-                    disclaimer.textContent = 'Slechts 500 plekken beschikbaar.';
-                    
-                    // Stap 2: Vereiste vinkjes groeperen en tekst inkorten
-                    consentHTML = `
-                        <div class="border rounded-lg p-4 space-y-4">
-                            <label class="flex items-start text-sm text-gray-600">
-                                <input type="checkbox" name="age_confirm" class="mr-3 mt-1 h-5 w-5 shrink-0" required>
-                                <span class="flex-1">Ik bevestig dat ik 18 jaar of ouder ben.</span>
-                            </label>
-                            <label class="flex items-start text-sm text-gray-600">
-                                <input type="checkbox" name="owner_confirm" class="mr-3 mt-1 h-5 w-5 shrink-0" required>
-                                <span class="flex-1">Ik ben eigenaar van de wagen of heb toestemming deze te laten bestickeren.</span>
-                            </label>
-                        </div>
-                        <div class="pt-2">
-                             <label class="flex items-start text-sm text-gray-600">
-                                <input type="checkbox" name="marketing_consent" class="mr-3 mt-1 h-5 w-5 shrink-0">
-                                <span class="flex-1">Ja, hou me op de hoogte van nieuws en aanbiedingen.</span>
-                            </label>
-                        </div>
-                    `;
-                } else { // advertiser
-                    title.textContent = 'Word een Launch Partner';
-                    // Voeg het 'bedrijf' veld bovenaan toe
-                    extraFieldContainer.innerHTML = '<div><input type="text" name="company" placeholder="Naam bedrijf" class="w-full p-3 border border-gray-300 rounded-lg" required></div>';
-                    submitButton.textContent = 'Ik heb interesse!';
-                    disclaimer.textContent = 'Let op: er zijn meer aanmeldingen dan de 5 beschikbare partnerplekken.';
-
-                    consentHTML = `
-                        <div class="border rounded-lg p-4 space-y-4">
-                            <label class="flex items-start text-sm text-gray-600">
-                                <input type="checkbox" name="age_confirm" class="mr-3 mt-1 h-5 w-5 shrink-0" required>
-                                <span class="flex-1">Ik bevestig dat ik 18 jaar of ouder ben en gemachtigd ben om te handelen voor dit bedrijf.</span>
-                            </label>
-                        </div>
-                        <div class="pt-2">
-                             <label class="flex items-start text-sm text-gray-600">
-                                <input type="checkbox" name="marketing_consent" class="mr-3 mt-1 h-5 w-5 shrink-0">
-                                <span class="flex-1">Ja, hou me op de hoogte van nieuws en aanbiedingen.</span>
-                            </label>
-                        </div>
-                    `;
-                }
-                consentFields.innerHTML = consentHTML;
-                recaptchaNotice.innerHTML = `Deze site wordt beschermd door reCAPTCHA en het <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="underline">Privacybeleid</a> en de <a href="https://policies.google.com/terms" target="_blank" rel="noopener" class="underline">Servicevoorwaarden</a> van Google zijn van toepassing.`;
-
-                modalTabs.forEach(tab => {
-                    tab.classList.toggle('active', tab.getAttribute('data-tab') === type);
-                });
-            };
+        modalTabs.forEach(tab => {
+            tab.classList.toggle('active', tab.getAttribute('data-tab') === type);
+        });
+        showStep(1); // Altijd resetten naar de eerste stap
+    };
     
-    const handleFormSubmit = async (e) => { e.preventDefault(); messageEl.textContent = ''; if (!form.checkValidity()) { form.reportValidity(); return; } /* ... rest van submit logica ... */ };
+    const handleFormSubmit = async (e) => { e.preventDefault(); if (!validateStep(2)) return; messageEl.textContent = 'Verzenden...'; /* ... rest van je submit logica ... */ };
     
     copyLinkButton.addEventListener('click', () => { navigator.clipboard.writeText(window.location.href).then(() => { copyLinkButton.textContent = 'Gekopieerd!'; setTimeout(() => { copyLinkButton.textContent = 'Kopieer Link'; }, 2000); }); });
     
@@ -618,17 +570,7 @@ const updateModalContent = (type) => {
     closeModalButton.addEventListener('click', () => { modal.style.display = 'none'; });
     modal.addEventListener('click', (e) => { if (e.target === modal) { modal.style.display = 'none'; } });
     form.addEventListener('submit', handleFormSubmit);
-    updateModalContent('driver');
-
-    // Cookie Banner Logic
-    const cookieBanner = document.getElementById('cookie-banner');
-    const acceptBtn = document.getElementById('cookie-accept');
-    const declineBtn = document.getElementById('cookie-decline');
-    if (!localStorage.getItem('cookie_consent')) { cookieBanner.classList.add('active'); }
-    acceptBtn.addEventListener('click', () => { localStorage.setItem('cookie_consent', 'accepted'); cookieBanner.classList.remove('active'); });
-    declineBtn.addEventListener('click', () => { localStorage.setItem('cookie_consent', 'declined'); cookieBanner.classList.remove('active'); });
     
-    // Header Join Buttons
     const headerJoinButtons = document.querySelectorAll('.header-join-button');
     headerJoinButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -638,14 +580,23 @@ const updateModalContent = (type) => {
         });
     });
     
-    // Modal Switcher
     const modalTabs = document.querySelectorAll('.modal-tab-button');
     modalTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
+        tab.addEventListener('click', (e) => {
+            e.preventDefault(); // Voorkom dat de knop het formulier submitt
             const selectedTab = tab.getAttribute('data-tab');
             updateModalContent(selectedTab);
         });
     });
+    updateModalContent('driver');
+
+    // --- Cookie Banner Logic ---
+    const cookieBanner = document.getElementById('cookie-banner');
+    const acceptBtn = document.getElementById('cookie-accept');
+    const declineBtn = document.getElementById('cookie-decline');
+    if (!localStorage.getItem('cookie_consent')) { cookieBanner.classList.add('active'); }
+    acceptBtn.addEventListener('click', () => { localStorage.setItem('cookie_consent', 'accepted'); cookieBanner.classList.remove('active'); });
+    declineBtn.addEventListener('click', () => { localStorage.setItem('cookie_consent', 'declined'); cookieBanner.classList.remove('active'); });
 });
 </script>
 
