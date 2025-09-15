@@ -12,6 +12,37 @@ export default async function handler(req, res) {
   }
 
   const { formData, recaptchaToken, formType } = req.body;
+  // --- SERVER-SIDE VALIDATION ---
+const { name, email, phone, company, age_confirm, owner_confirm } = formData;
+const isDriver = formType === 'driver';
+
+// Basic validation for common fields
+if (!name || !email || !phone) {
+  return res.status(400).json({ message: 'Name, email, and phone are required.' });
+}
+
+// Email format validation
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+if (!emailRegex.test(email)) {
+  return res.status(400).json({ message: 'Please provide a valid email address.' });
+}
+
+// Driver-specific validation
+if (isDriver) {
+  if (age_confirm !== 'on' || owner_confirm !== 'on') {
+    return res.status(400).json({ message: 'You must confirm your age and vehicle ownership.' });
+  }
+} 
+// Advertiser-specific validation
+else {
+  if (!company) {
+    return res.status(400).json({ message: 'Company name is required for advertisers.' });
+  }
+  if (age_confirm !== 'on') { // In the HTML, this is the 'authorized to act' checkbox
+    return res.status(400).json({ message: 'You must confirm you are authorized to act for this company.' });
+  }
+}
+// --- END VALIDATION ---
 
   // 1. reCAPTCHA Verification
   try {
@@ -41,7 +72,7 @@ export default async function handler(req, res) {
     });
 
     // 3. Send a success response back to the front-end
-    return res.status(200).json({ message: 'Success! Check your inbox/sms to confirm.' });
+    return res.status(200).json({ message: 'Success! Thanks for joining. We will be in touch soon.' });
 
   } catch (error) {
     console.error(error);
