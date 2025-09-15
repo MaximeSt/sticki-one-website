@@ -5,6 +5,12 @@ import { Resend } from 'resend';
 // Initialize Resend with your API key from an environment variable
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Helper function to prevent HTML injection
+function sanitize(text) {
+  if (!text) return '';
+  return String(text).replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
 export default async function handler(req, res) {
   // Only allow POST requests
   if (req.method !== 'POST') {
@@ -60,9 +66,9 @@ else {
 
     // 2. Data is valid, prepare and send an email
     const subject = formType === 'driver' ? 'New Driver Waitlist Submission!' : 'New Advertiser Interest!';
-    const emailBody = Object.entries(formData)
-      .map(([key, value]) => `<p><strong>${key}:</strong> ${value}</p>`)
-      .join('');
+   const emailBody = Object.entries(formData)
+  .map(([key, value]) => `<p><strong>${sanitize(key)}:</strong> ${sanitize(value)}</p>`)
+  .join('');
 
     await resend.emails.send({
       from: 'Sticki.one Waitlist <waitlist@firstdrop.sticki.one>',
